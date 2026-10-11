@@ -1,0 +1,33 @@
+# Environment Variables
+.env
+backend/.env
+*.env
+
+# Python Virtual Environments
+venv/
+backend/venv/
+env/
+.venv/
+ENV/
+
+# Python Bytecode and Caches
+__pycache__/
+*/__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+backend/.pytest_cache/
+
+# Machine Learning Artifacts & Temporary Data
+*.log
+backend/logs/
+
+# IDE / Editor Files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS Artifacts
+.DS_Store
+Thumbs.db

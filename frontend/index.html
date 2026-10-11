@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WareFlow · Log in or create an account</title>
+  <meta name="description" content="WareFlow ranks every product in your warehouse by urgency and flags unusual stock for a person to check.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Instrument+Sans:wght@400..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script>document.documentElement.classList.add('js');</script>
+</head>
+<body class="auth-page">
+  <div class="toasts" id="toasts" aria-live="polite"></div>
+
+  <main id="landingView" class="landing" style="display: flex; flex-direction: column; min-height: 100vh;">
+    <header style="padding: 2rem; display: flex; justify-content: space-between; align-items: center; background: #fff; border-bottom: 1px solid #eee;">
+      <a class="brand" href="#" style="font-size: 1.5rem;"><span data-logo></span>WareFlow</a>
+      <div style="display: flex; gap: 1rem;">
+        <button class="btn btn-ghost" onclick="showAuth('login')">Log in</button>
+        <button class="btn btn-primary" onclick="showAuth('signup')">Get Started</button>
+      </div>
+    </header>
+    <section style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 4rem 2rem; background: #fafafa;">
+      <h1 style="font-size: 3rem; max-width: 800px; margin-bottom: 1.5rem; color: #111;">Complete visibility and operational intelligence for your warehouse</h1>
+      <p style="font-size: 1.25rem; color: #555; max-width: 600px; margin-bottom: 3rem; line-height: 1.6;">
+        WareFlow gives managers real-time inventory tracking, physical warehouse mapping, intelligent order fulfillment, workforce management, and demand forecasting in one unified platform.
+      </p>
+      <div style="display: flex; gap: 1.5rem; flex-wrap: wrap; justify-content: center;">
+        <div style="background: #fff; padding: 1.5rem; border-radius: 8px; border: 1px solid #eee; width: 250px; text-align: left;">
+          <i data-icon="snow" style="font-size: 2rem; color: #f5b335; margin-bottom: 1rem;"></i>
+          <h3 style="margin-bottom: 0.5rem;">Inventory Control</h3>
+          <p style="color: #666; font-size: 0.9rem;">Track stock levels, monitor reorder thresholds, and map locations.</p>
+        </div>
+        <div style="background: #fff; padding: 1.5rem; border-radius: 8px; border: 1px solid #eee; width: 250px; text-align: left;">
+          <i data-icon="users" style="font-size: 2rem; color: #f5b335; margin-bottom: 1rem;"></i>
+          <h3 style="margin-bottom: 0.5rem;">Workforce Management</h3>
+          <p style="color: #666; font-size: 0.9rem;">Balance workloads and intelligently assign picking and putaway jobs.</p>
+        </div>
+        <div style="background: #fff; padding: 1.5rem; border-radius: 8px; border: 1px solid #eee; width: 250px; text-align: left;">
+          <i data-icon="rank" style="font-size: 2rem; color: #f5b335; margin-bottom: 1rem;"></i>
+          <h3 style="margin-bottom: 0.5rem;">AI Forecasting</h3>
+          <p style="color: #666; font-size: 0.9rem;">Predict 7-day and 30-day demand to proactively manage stock and storage.</p>
+        </div>
+      </div>
+      <button class="btn btn-primary btn-block" style="margin-top: 4rem; max-width: 300px; font-size: 1.1rem; padding: 1rem;" onclick="showAuth('signup')">Get Started Now</button>
+    </section>
+    <footer style="padding: 2rem; text-align: center; background: #fff; color: #888; border-top: 1px solid #eee;">
+      © 2026 WareFlow. Built for logistics and operations.
+    </footer>
+  </main>
+
+  <main class="auth" id="authView" style="display: none;">
+    <!-- left: the form -->
+    <section class="auth-pane">
+      <header>
+        <a class="brand" href="index.html" aria-label="WareFlow home"><span data-logo></span>WareFlow</a>
+      </header>
+
+      <div class="auth-card">
+        <div class="seg" id="seg" data-mode="signup" role="tablist" aria-label="Choose how to continue" data-reveal style="--d:.05s">
+          <span class="seg-ind"></span>
+          <button type="button" role="tab" data-mode="signup" class="on" aria-selected="true">Create account</button>
+          <button type="button" role="tab" data-mode="login" aria-selected="false">Log in</button>
+        </div>
+
+        <div class="auth-head" id="authHead" data-reveal style="--d:.15s">
+          <h1>Set up your warehouse workspace</h1>
+          <p>Create an account, then add your sites, team and paperwork.</p>
+        </div>
+
+        <!-- create account -->
+        <form class="auth-form" id="signupForm" novalidate data-reveal style="--d:.25s">
+          <div class="field">
+            <label for="suName">Company name<span class="req">*</span></label>
+            <input class="input" id="suName" name="suName" autocomplete="organization" placeholder="e.g. Apex Cold Logistics Pvt Ltd">
+          </div>
+
+          <fieldset class="field">
+            <legend>What kind of warehouse do you run?<span class="req">*</span></legend>
+            <div class="opt-grid">
+              <label class="opt"><input type="radio" name="type" value="cold_storage_co"><span class="opt-card"><i data-icon="snow"></i><b>Cold storage</b><small>Food, pharma and other temperature-sensitive stock</small></span></label>
+              <label class="opt"><input type="radio" name="type" value="fashion_co"><span class="opt-card"><i data-icon="shirt"></i><b>Fashion &amp; apparel</b><small>Seasonal stock with fast-moving sizes and styles</small></span></label>
+              <label class="opt"><input type="radio" name="type" value="electronics_co"><span class="opt-card"><i data-icon="chip"></i><b>Electronics &amp; hardware</b><small>High-value parts, devices and accessories</small></span></label>
+            </div>
+          </fieldset>
+
+          <div class="field">
+            <label for="suEmail">Admin email<span class="req">*</span></label>
+            <input class="input" id="suEmail" name="suEmail" type="email" autocomplete="email" placeholder="admin@company.com">
+          </div>
+
+          <div class="row2">
+            <div class="field">
+              <label for="suPass">Password<span class="req">*</span></label>
+              <div class="pw">
+                <input class="input" id="suPass" name="suPass" type="password" autocomplete="new-password" placeholder="At least 8 characters">
+                <button type="button" class="icon-btn toggle" aria-label="Show password"><i data-icon="eye"></i></button>
+              </div>
+              <div class="meter" id="meter" data-score="0"><i></i><i></i><i></i><i></i><span></span></div>
+            </div>
+            <div class="field">
+              <label for="suPass2">Confirm password<span class="req">*</span></label>
+              <div class="pw">
+                <input class="input" id="suPass2" name="suPass2" type="password" autocomplete="new-password" placeholder="Type it again">
+                <button type="button" class="icon-btn toggle" aria-label="Show password"><i data-icon="eye"></i></button>
+              </div>
+            </div>
+          </div>
+
+          <button class="btn btn-primary btn-block" type="submit">Create account</button>
+          <p class="swap">Already have an account? <button type="button" data-switch="login">Log in</button></p>
+        </form>
+
+        <!-- log in -->
+        <form class="auth-form" id="loginForm" novalidate hidden>
+          <div class="field">
+            <label for="liEmail">Admin email</label>
+            <input class="input" id="liEmail" name="liEmail" type="email" autocomplete="email" placeholder="admin@company.com">
+          </div>
+          <div class="field">
+            <label for="liPass">Password</label>
+            <div class="pw">
+              <input class="input" id="liPass" name="liPass" type="password" autocomplete="current-password" placeholder="Your password">
+              <button type="button" class="icon-btn toggle" aria-label="Show password"><i data-icon="eye"></i></button>
+            </div>
+          </div>
+          <button class="btn btn-primary btn-block" type="submit">Log in</button>
+          <p class="swap">New to WareFlow? <button type="button" data-switch="signup">Create an account</button></p>
+        </form>
+      </div>
+
+      <p class="auth-foot">© 2026 WareFlow. Built for logistics and operations.</p>
+    </section>
+
+    <!-- right: the parallax warehouse -->
+    <aside class="auth-visual" data-scene-host>
+      <div class="scene" data-scene></div>
+      <div class="vis-copy">
+        <h2>See which stock needs you first.</h2>
+        <p>WareFlow scores every product by urgency and sends the odd ones to a person to check, so your team works on the right shelf first.</p>
+        <ul class="vis-list">
+          <li><i data-icon="rank"></i>Urgency ranking for every product</li>
+          <li><i data-icon="alert"></i>Unusual stock flagged for review</li>
+          <li><i data-icon="bell"></i>Alerts on Telegram and Discord</li>
+        </ul>
+      </div>
+    </aside>
+  </main>
+
+  <script>
+    function showAuth(mode) {
+      document.getElementById('landingView').style.display = 'none';
+      document.getElementById('authView').style.display = 'flex';
+      // Trigger click on the correct tab if UI exists
+      const targetBtn = document.querySelector(`button[data-mode="${mode}"]`);
+      if (targetBtn) targetBtn.click();
+    }
+    
+    // Automatically redirect if already logged in
+    if (localStorage.getItem('wf_token')) {
+        const session = JSON.parse(localStorage.getItem('wf_session_data') || '{}');
+        if (session && session.user && session.user.setup_completed) {
+             window.location.replace('app.html');
+        } else if (session && session.user && session.user.role && session.user.role.toLowerCase() === 'employee') {
+             window.location.replace('app.html#employeeportal');
+        } else {
+             window.location.replace('onboarding.html');
+        }
+    }
+  </script>
+  <script src="js/ui.js"></script>
+  <script src="js/api/apiClient.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>

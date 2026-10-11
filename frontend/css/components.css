@@ -1,0 +1,63 @@
+/* Custom Components for Wareflow Prototype */
+.wf-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+.wf-table th {
+  background: #F7F9FA;
+  padding: 12px 16px;
+  font-weight: 600;
+  color: #12202C;
+  border-bottom: 1px solid #DCE6EC;
+}
+.wf-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #DCE6EC;
+  color: #12202C;
+}
+.wf-table tr:last-child td {
+  border-bottom: none;
+}
+.wf-table tbody tr:hover {
+  background: #F7F9FA;
+}
+
+/* Badges for status */
+.status-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.status-new { background: #E3F2FD; color: #1976D2; }
+.status-picking, .status-assigned, .status-pending { background: #FFF3E0; color: #F57C00; }
+.status-packed, .status-ready { background: #E8F5E9; color: #388E3C; }
+.status-delivered, .status-completed, .status-accepted { background: #E8F5E9; color: #388E3C; }
+.status-delayed, .status-rejected { background: #FFEBEE; color: #D32F2F; }
+
+/* Notification badge */
+.badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: #e5573f;
+  color: white;
+  font-size: 10px;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 10px;
+}
+.topbar .icon-btn { position: relative; }
+
+/* Employee Portal specific */
+.ep-job-card {
+  background: white;
+  border: 1px solid #DCE6EC;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+.ep-job-card h3 { margin-top: 0; color: #12202C; }

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WareFlow · Overview</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Instrument+Sans:wght@400..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    (function () {
+      var r = document.documentElement;
+      r.classList.add('js', 'no-tr');
+      var s = 'open';
+      try { s = localStorage.getItem('wf2_sidebar') || 'open'; } catch (e) {}
+      r.dataset.sidebar = s;
+      r.dataset.drawer = 'closed';
+    })();
+  </script>
+</head>
+<body class="app-page">
+  <div class="toasts" id="toasts" aria-live="polite"></div>
+  <div class="scrim" data-sidebar-close></div>
+
+  <div class="app">
+    <!-- ================= sidebar (hide with the button, or press [ ) ================= -->
+    <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+      <div class="sb-in">
+        <div class="sb-top">
+          <a class="brand" href="dashboard.html" style="color:#fff"><span data-logo></span>WareFlow</a>
+          <button class="icon-btn" type="button" data-sidebar-toggle aria-label="Hide sidebar"><i data-icon="panel"></i></button>
+        </div>
+
+        <div class="sb-company">
+          <span class="avatar" id="sbAvatar">W</span>
+          <div><b id="sbCompany">Your company</b><span id="sbType">Operations profile</span></div>
+        </div>
+
+        <p class="sb-label">Workspace</p>
+        <a class="sb-link active" href="dashboard.html"><i data-icon="grid"></i>Overview</a>
+        <a class="sb-link" href="onboarding.html"><i data-icon="building"></i>Company setup</a>
+
+        <p class="sb-label">Jump to</p>
+        <a class="sb-link" href="#readiness"><i data-icon="shield"></i>Readiness</a>
+        <a class="sb-link" href="#sites"><i data-icon="warehouse"></i>Warehouses</a>
+        <a class="sb-link" href="#team"><i data-icon="users"></i>Team</a>
+        <a class="sb-link" href="#papers"><i data-icon="file"></i>Seal &amp; documents</a>
+
+        <div class="sb-foot">
+          <button class="sb-btn" type="button" data-sidebar-toggle><i data-icon="panel"></i><span data-sb-label>Hide sidebar</span><span class="kbd">[</span></button>
+          <button class="sb-btn out" type="button" data-logout><i data-icon="logout"></i>Log out</button>
+        </div>
+      </div>
+    </aside>
+
+    <div class="main">
+      <header class="topbar" id="topbar">
+        <button class="icon-btn" type="button" data-sidebar-toggle aria-label="Toggle sidebar"><i data-icon="panel"></i></button>
+        <div class="crumbs"><span>WareFlow</span><span class="sep">/</span><b>Overview</b></div>
+        <div class="spacer"></div>
+        <span class="chip"><i data-icon="user"></i><span id="userEmail"></span></span>
+      </header>
+
+      <main class="content" id="content">
+        <section class="hero tall" data-scene-host>
+          <div class="scene" data-scene data-scroll></div>
+          <div>
+            <span class="pill onDark live" id="dStatus">Loading</span>
+            <h1 id="dTitle" style="margin-top:18px">Your overview</h1>
+            <p class="lead" id="dSub"></p>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="onboarding.html"><i data-icon="edit"></i>Edit details</a>
+            </div>
+          </div>
+        </section>
+
+        <div class="kpis" id="kpis"></div>
+
+        <section class="card ready" id="readiness" data-reveal></section>
+
+        <div class="dgrid">
+          <div class="dcol">
+            <section class="card" id="sites" data-reveal></section>
+            <section class="card" id="team" data-reveal></section>
+            <section class="card" id="nextCard" data-reveal></section>
+          </div>
+          <div class="dcol" id="papers">
+            <section class="card" id="profileCard" data-reveal></section>
+            <section class="card" id="sealCard" data-reveal></section>
+            <section class="card" id="docsCard" data-reveal></section>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="js/ui.js"></script>
+  <script src="js/api/apiClient.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

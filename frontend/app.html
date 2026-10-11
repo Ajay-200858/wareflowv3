@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WareFlow · App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Instrument+Sans:wght@400..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/warehouse.css">
+  <script>
+    (function () {
+      var r = document.documentElement;
+      r.classList.add('js', 'no-tr');
+      var s = 'open';
+      try { s = localStorage.getItem('wf2_sidebar') || 'open'; } catch (e) {}
+      r.dataset.sidebar = s;
+      r.dataset.drawer = 'closed';
+    })();
+  </script>
+</head>
+<body class="app-page">
+  <div class="toasts" id="toasts" aria-live="polite"></div>
+  <div class="scrim" data-sidebar-close></div>
+
+  <div class="app">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+      <div class="sb-in">
+        <div class="sb-top">
+          <a class="brand" href="#overview" style="color:#fff"><span data-logo></span>WareFlow</a>
+          <button class="icon-btn" type="button" data-sidebar-toggle aria-label="Hide sidebar"><i data-icon="panel"></i></button>
+        </div>
+
+        <div class="sb-company">
+          <span class="avatar" id="sbAvatar">W</span>
+          <div><b id="sbCompany">Company</b><span id="sbType">Manager</span></div>
+        </div>
+
+        <div id="sidebar-nav"></div>
+
+        <div class="sb-foot">
+          <button class="sb-btn" type="button" data-sidebar-toggle><i data-icon="panel"></i><span data-sb-label>Hide sidebar</span><span class="kbd">[</span></button>
+          <button class="sb-btn out" type="button" data-logout><i data-icon="logout"></i>Log out</button>
+        </div>
+      </div>
+    </aside>
+
+    <div class="main">
+      <header class="topbar" id="topbar">
+        <button class="icon-btn" type="button" data-sidebar-toggle aria-label="Toggle sidebar"><i data-icon="panel"></i></button>
+        <div class="crumbs"><span>WareFlow</span><span class="sep">/</span><b id="topbar-title">Overview</b></div>
+        <div class="spacer"></div>
+        <button class="icon-btn" type="button" id="btn-notifications"><i data-icon="bell"></i><span class="badge" id="notif-badge" style="display:none"></span></button>
+        <button class="chip" id="btn-profile" style="cursor:pointer; background:none; border:none; display:inline-flex; align-items:center; gap:8px;"><i data-icon="user"></i><span id="userEmail"></span></button>
+      </header>
+
+      <!-- Router View Container -->
+      <main class="content" id="router-view">
+         <!-- Content injected here -->
+      </main>
+    </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="profileModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:9999; justify-content:center; align-items:center;">
+    <div class="modal" style="background:#fff; padding:24px; border-radius:8px; width:400px; max-width:90%;">
+      <h2>Your Profile</h2>
+      <form id="profileForm" style="display:flex; flex-direction:column; gap:16px; margin-top:16px;">
+        <div class="field">
+          <label>Email</label>
+          <input class="input" id="profEmail" readonly disabled>
+        </div>
+        <div class="field">
+          <label>Company Name</label>
+          <input class="input" id="profCompany">
+        </div>
+        <div style="display:flex; gap:12px; justify-content:flex-end; margin-top:8px;">
+          <button type="button" class="btn btn-ghost" id="profClose">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/ui.js?v=3"></script>
+  <script src="js/api/apiClient.js?v=3"></script>
+  <script src="js/auth.js?v=3"></script>
+  <script src="js/pages/overview.js?v=3"></script>
+  <script src="js/pages/products.js?v=3"></script>
+  <script src="js/pages/inventory.js?v=3"></script>
+  <script src="js/pages/warehouse.js?v=3"></script>
+  <script src="js/pages/orders.js?v=3"></script>
+  <script src="js/pages/jobs.js?v=3"></script>
+  <script src="js/pages/extra.js?v=3"></script>
+  <script src="js/pages/employees.js?v=3"></script>
+  <script src="js/pages/aiDecisions.js?v=3"></script>
+  <script src="js/pages/import.js?v=3"></script>
+  <script src="js/pages/notifications.js?v=3"></script>
+  <script src="js/pages/reports.js?v=3"></script>
+  <script src="js/pages/employeePortal.js?v=3"></script>
+  <script src="js/router.js?v=3"></script>
+  <script src="js/data/dataService.js?v=3"></script>
+  <script src="js/app.js?v=3"></script>
+</body>
+</html>

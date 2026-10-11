@@ -1,0 +1,534 @@
+/* ==========================================================================
+   WareFlow Digital Twin 2D Warehouse Stylesheet
+   Hierarchy: Warehouse -> Region (Zone) -> Rack -> 2D Row/Column Storage Grid
+   ========================================================================== */
+
+/* Layout & Top Controls */
+.dt-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.dt-main-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+@media (max-width: 1100px) {
+  .dt-main-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Header & Breadcrumbs */
+.dt-breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+  color: #475569;
+}
+.dt-breadcrumbs a {
+  color: #0284c7;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.15s;
+}
+.dt-breadcrumbs a:hover {
+  text-decoration: underline;
+  color: #0369a1;
+}
+.dt-breadcrumbs .sep {
+  color: #94a3b8;
+  font-size: 0.8rem;
+}
+.dt-breadcrumbs .active-crumb {
+  color: #0f172a;
+  font-weight: 700;
+}
+
+/* Legend and Status Indicators */
+.dt-legend {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.8rem;
+  align-items: center;
+  background: #f8fafc;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+  flex-wrap: wrap;
+}
+.dt-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 500;
+  color: #475569;
+}
+.dt-legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+}
+
+/* Status Color Palette */
+.status-empty-dot { background: #10b981; }
+.status-partial-dot { background: #3b82f6; }
+.status-nearfull-dot { background: #f59e0b; }
+.status-full-dot { background: #ef4444; }
+.status-inactive-dot { background: #94a3b8; }
+
+/* ==========================================================================
+   LEVEL 1: WAREHOUSE REGIONS (ZONES)
+   Responsive 2x2 desktop layout for regions
+   ========================================================================== */
+.dt-regions-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+@media (max-width: 860px) {
+  .dt-regions-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.dt-region-box {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 1.25rem 1.5rem;
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+}
+
+.dt-region-box:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px -4px rgba(15, 23, 42, 0.08);
+}
+
+.dt-region-box.selected {
+  border-color: #0284c7;
+  box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.25), 0 8px 20px -4px rgba(2, 132, 199, 0.15);
+}
+
+/* Subtle Left Accent Border per status */
+.dt-region-box::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 5px;
+}
+.dt-region-box.state-empty::before { background: #10b981; }
+.dt-region-box.state-partial::before { background: #3b82f6; }
+.dt-region-box.state-nearfull::before { background: #f59e0b; }
+.dt-region-box.state-full::before { background: #ef4444; }
+.dt-region-box.state-inactive::before { background: #94a3b8; }
+
+.dt-box-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.dt-box-title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dt-box-code {
+  font-size: 0.75rem;
+  color: #64748b;
+  font-weight: 600;
+  background: #f1f5f9;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.dt-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 9999px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.dt-badge-empty { background: #d1fae5; color: #065f46; }
+.dt-badge-partial { background: #dbeafe; color: #1e40af; }
+.dt-badge-nearfull { background: #fef3c7; color: #92400e; }
+.dt-badge-full { background: #fee2e2; color: #991b1b; }
+.dt-badge-inactive { background: #f1f5f9; color: #475569; }
+
+.dt-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.dt-metric-tile {
+  background: #f8fafc;
+  border: 1px solid #f1f5f9;
+  border-radius: 6px;
+  padding: 0.6rem 0.8rem;
+}
+.dt-metric-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: #64748b;
+  letter-spacing: 0.4px;
+}
+.dt-metric-value {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-top: 2px;
+}
+
+.dt-progress-container {
+  margin-bottom: 1rem;
+}
+.dt-progress-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+}
+.dt-progress-bar {
+  width: 100%;
+  height: 8px;
+  background: #e2e8f0;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+.dt-progress-fill {
+  height: 100%;
+  border-radius: 9999px;
+  transition: width 0.3s ease;
+}
+
+.dt-box-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 0.75rem;
+  border-top: 1px solid #f1f5f9;
+}
+.dt-box-hint {
+  font-size: 0.75rem;
+  color: #94a3b8;
+}
+
+/* ==========================================================================
+   LEVEL 2: RACKS GRID INSIDE REGION
+   ========================================================================== */
+.dt-racks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1.25rem;
+}
+
+.dt-rack-box {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 1.25rem;
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+}
+
+.dt-rack-box:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px -4px rgba(15, 23, 42, 0.08);
+}
+
+.dt-rack-box.selected {
+  border-color: #0284c7;
+  box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.25), 0 8px 20px -4px rgba(2, 132, 199, 0.15);
+}
+
+.dt-rack-box::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 4px;
+}
+.dt-rack-box.state-empty::before { background: #10b981; }
+.dt-rack-box.state-partial::before { background: #3b82f6; }
+.dt-rack-box.state-nearfull::before { background: #f59e0b; }
+.dt-rack-box.state-full::before { background: #ef4444; }
+.dt-rack-box.state-inactive::before { background: #94a3b8; }
+
+/* Miniature Cell Preview inside Rack Box */
+.dt-rack-preview-wrapper {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 8px;
+  margin-bottom: 1rem;
+}
+.dt-rack-preview-title {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  color: #64748b;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.dt-mini-shelf {
+  display: grid;
+  gap: 3px;
+  max-height: 90px;
+  overflow: hidden;
+}
+.dt-mini-cell {
+  height: 12px;
+  border-radius: 2px;
+  background: #e2e8f0;
+  transition: opacity 0.15s;
+}
+.dt-mini-cell.occ-empty { background: #10b981; }
+.dt-mini-cell.occ-partial { background: #3b82f6; }
+.dt-mini-cell.occ-nearfull { background: #f59e0b; }
+.dt-mini-cell.occ-full { background: #ef4444; }
+.dt-mini-cell.occ-inactive { background: #94a3b8; }
+.dt-mini-cell.occ-unconfigured { background: #f1f5f9; border: 1px dashed #cbd5e1; }
+
+/* ==========================================================================
+   LEVEL 3: PROPER 2D ROW-AND-COLUMN STORAGE GRID (CSS GRID)
+   ========================================================================== */
+.dt-storage-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 1.25rem;
+}
+
+.dt-grid-scroll-pane {
+  overflow: auto;
+  max-height: calc(100vh - 270px);
+  min-height: 380px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: #f8fafc;
+  padding: 16px;
+}
+
+/* CSS Grid layout for 2D Storage Matrix */
+.dt-storage-matrix {
+  display: grid;
+  gap: 10px;
+  width: max-content;
+  min-width: 100%;
+}
+
+/* Sticky Headers */
+.dt-corner-header {
+  grid-column: 1;
+  grid-row: 1;
+  background: #0f172a;
+  color: #f8fafc;
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  height: 38px;
+  z-index: 5;
+  letter-spacing: 0.5px;
+}
+
+.dt-col-header {
+  grid-row: 1;
+  background: #1e293b;
+  color: #f8fafc;
+  font-size: 0.8rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  height: 38px;
+  z-index: 4;
+  letter-spacing: 0.5px;
+}
+
+.dt-row-header {
+  grid-column: 1;
+  background: #334155;
+  color: #f8fafc;
+  font-size: 0.8rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  min-height: 68px;
+  z-index: 3;
+}
+
+/* Single unified storage cell */
+.dt-storage-cell {
+  background: #ffffff;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 8px 6px;
+  min-height: 68px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+  position: relative;
+  user-select: none;
+}
+
+.dt-storage-cell:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px -2px rgba(15, 23, 42, 0.12);
+  z-index: 2;
+}
+
+.dt-storage-cell.selected {
+  outline: 3px solid #0284c7;
+  box-shadow: 0 0 0 5px rgba(2, 132, 199, 0.3);
+  transform: scale(1.03);
+  z-index: 10;
+}
+
+.dt-storage-cell.dimmed {
+  opacity: 0.25;
+}
+
+/* Cell State Themes */
+.dt-storage-cell.cell-empty {
+  border-color: #10b981;
+  background: #ecfdf5;
+}
+.dt-storage-cell.cell-empty .dt-cell-badge {
+  background: #10b981;
+  color: #ffffff;
+}
+
+.dt-storage-cell.cell-partial {
+  border-color: #3b82f6;
+  background: #eff6ff;
+}
+.dt-storage-cell.cell-partial .dt-cell-badge {
+  background: #3b82f6;
+  color: #ffffff;
+}
+
+.dt-storage-cell.cell-nearfull {
+  border-color: #f59e0b;
+  background: #fffbeb;
+}
+.dt-storage-cell.cell-nearfull .dt-cell-badge {
+  background: #f59e0b;
+  color: #ffffff;
+}
+
+.dt-storage-cell.cell-full {
+  border-color: #ef4444;
+  background: #fef2f2;
+}
+.dt-storage-cell.cell-full .dt-cell-badge {
+  background: #ef4444;
+  color: #ffffff;
+}
+
+.dt-storage-cell.cell-inactive {
+  border-color: #94a3b8;
+  background: #f1f5f9;
+}
+.dt-storage-cell.cell-inactive .dt-cell-badge {
+  background: #94a3b8;
+  color: #ffffff;
+}
+
+/* Contents inside the storage cell */
+.dt-cell-code {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1.2;
+}
+
+.dt-cell-capacity {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #334155;
+  font-variant-numeric: tabular-nums;
+  margin: 3px 0;
+}
+
+.dt-cell-badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+/* Aligned Unconfigured / Missing Cell Slot */
+.dt-storage-cell-unconfigured {
+  background: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  border-radius: 8px;
+  min-height: 68px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #94a3b8;
+  font-size: 0.7rem;
+  user-select: none;
+}
+.dt-storage-cell-unconfigured span {
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   SIDEBAR CONTEXT PANEL
+   ========================================================================== */
+.dt-sidebar-panel {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 1.25rem;
+  position: sticky;
+  top: 1rem;
+}

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WareFlow · Company setup</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Instrument+Sans:wght@400..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script>document.documentElement.classList.add('js', 'no-tr');</script>
+  <style>
+    .setup-container { max-width: 800px; margin: 0 auto; padding: 2rem; }
+    .setup-header { text-align: center; margin-bottom: 2rem; }
+    .setup-header h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+    .setup-nav { display: flex; justify-content: space-between; margin-top: 2rem; border-top: 1px solid #eee; padding-top: 1rem; }
+    .csv-box { border: 1px dashed #ccc; padding: 2rem; text-align: center; border-radius: 8px; margin: 1rem 0; background: #fafafa; }
+    .csv-box input { display: none; }
+    .csv-label { cursor: pointer; color: #0066cc; font-weight: 500; }
+    .csv-status { margin-top: 1rem; font-size: 0.9rem; color: #666; }
+    .step-section { display: none; }
+    .step-section.active { display: block; }
+    .error-msg { color: #d32f2f; margin-top: 0.5rem; font-size: 0.9rem; }
+    .step-indicator { display: flex; gap: 0.5rem; margin-bottom: 2rem; justify-content: center; }
+    .step-dot { width: 12px; height: 12px; border-radius: 50%; background: #ddd; }
+    .step-dot.active { background: #ffb703; }
+  </style>
+</head>
+<body class="auth-page">
+  <div class="toasts" id="toasts" aria-live="polite"></div>
+
+  <div class="setup-container">
+    <div class="setup-header">
+      <h1 id="heroTitle">Set up your company</h1>
+      <p class="lead">Complete this short wizard to configure your warehouse workspace.</p>
+    </div>
+
+    <div class="step-indicator" id="stepIndicator">
+      <div class="step-dot active"></div>
+      <div class="step-dot"></div>
+      <div class="step-dot"></div>
+      <div class="step-dot"></div>
+      <div class="step-dot"></div>
+    </div>
+
+    <!-- Section 1: Company -->
+    <section class="step-section active" id="s1" data-step="1">
+      <h2>1. Company Details</h2>
+      <p>Basic information about your business.</p>
+      <div class="panel">
+        <div class="field">
+          <label for="coName">Company Name<span class="req">*</span></label>
+          <input class="input" id="coName" placeholder="e.g. Apex Cold Logistics">
+          <div class="error-msg" id="coNameErr"></div>
+        </div>
+        <div class="field">
+          <label for="coAddress">Head office address</label>
+          <textarea class="textarea" id="coAddress" placeholder="Street, city, state and postal code"></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2: Warehouse Structure -->
+    <section class="step-section" id="s2" data-step="2">
+      <h2>2. Warehouse Structure</h2>
+      <p>Define your physical storage hierarchy (Warehouse → Zone → Rack → Row → Position).</p>
+      <div class="panel">
+        <div class="csv-box">
+          <i data-icon="upload" style="font-size: 2rem; opacity: 0.5;"></i><br>
+          <label class="csv-label" for="whCsvInput">Upload Warehouse CSV</label>
+          <input type="file" id="whCsvInput" accept=".csv">
+          <p class="csv-status" id="whCsvStatus">No file selected. <a href="#" id="whCsvTemplate">Download template</a></p>
+        </div>
+        <div style="text-align: center; margin: 1rem 0;">OR</div>
+        <div class="field">
+          <label>Add a single warehouse manually</label>
+          <input class="input" id="manualWhName" placeholder="Warehouse Name">
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3: Employees -->
+    <section class="step-section" id="s3" data-step="3">
+      <h2>3. Employees & Managers</h2>
+      <p>Bulk import your operational team.</p>
+      <div class="panel">
+        <div class="csv-box">
+          <i data-icon="users" style="font-size: 2rem; opacity: 0.5;"></i><br>
+          <label class="csv-label" for="empCsvInput">Upload Employees CSV</label>
+          <input type="file" id="empCsvInput" accept=".csv">
+          <p class="csv-status" id="empCsvStatus">No file selected. <a href="#" id="empCsvTemplate">Download template</a></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 4: Initial Inventory -->
+    <section class="step-section" id="s4" data-step="4">
+      <h2>4. Initial Inventory</h2>
+      <p>Import your starting products and stock levels.</p>
+      <div class="panel">
+        <div class="csv-box">
+          <i data-icon="snow" style="font-size: 2rem; opacity: 0.5;"></i><br>
+          <label class="csv-label" for="invCsvInput">Upload Inventory CSV</label>
+          <input type="file" id="invCsvInput" accept=".csv">
+          <p class="csv-status" id="invCsvStatus">No file selected. <a href="#" id="invCsvTemplate">Download template</a></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 5: Historical Data -->
+    <section class="step-section" id="s5" data-step="5">
+      <h2>5. Historical Sales/Orders</h2>
+      <p>Used to train the ML demand forecasting models. This is required for accurate predictions.</p>
+      <div class="panel">
+        <div class="csv-box">
+          <i data-icon="file" style="font-size: 2rem; opacity: 0.5;"></i><br>
+          <label class="csv-label" for="histCsvInput">Upload Historical Data CSV</label>
+          <input type="file" id="histCsvInput" accept=".csv">
+          <p class="csv-status" id="histCsvStatus">No file selected. <a href="#" id="histCsvTemplate">Download template</a></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Navigation -->
+    <div class="setup-nav">
+      <button class="btn btn-ghost" type="button" id="btnBack" style="visibility: hidden;">Back</button>
+      <div style="display:flex; gap:10px;">
+        <button class="btn btn-ghost" type="button" id="btnSkip" style="display: none;">Skip</button>
+        <button class="btn btn-onDark" type="button" id="btnSaveProgress">Save Progress</button>
+        <button class="btn btn-primary" type="button" id="btnNext">Continue</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/ui.js"></script>
+  <script src="js/api/apiClient.js?v=3"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/onboarding.js?v=3"></script>
+</body>
+</html>
