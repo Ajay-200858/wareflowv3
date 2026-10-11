@@ -14,48 +14,102 @@
 <body class="auth-page">
   <div class="toasts" id="toasts" aria-live="polite"></div>
 
-  <main id="landingView" class="landing" style="display: flex; flex-direction: column; min-height: 100vh;">
-    <header style="padding: 2rem; display: flex; justify-content: space-between; align-items: center; background: #fff; border-bottom: 1px solid #eee;">
-      <a class="brand" href="#" style="font-size: 1.5rem;"><span data-logo></span>WareFlow</a>
-      <div style="display: flex; gap: 1rem;">
-        <button class="btn btn-ghost" onclick="showAuth('login')">Log in</button>
-        <button class="btn btn-primary" onclick="showAuth('signup')">Get Started</button>
+  <main id="landingView" class="landing">
+    <header class="landing-nav">
+      <a class="brand" href="#" onclick="showLanding(); return false;" aria-label="WareFlow home"><span data-logo></span>WareFlow</a>
+      <nav class="landing-nav-links" aria-label="Main Navigation">
+        <a href="#capabilities" class="landing-nav-link">Capabilities</a>
+        <a href="#architecture" class="landing-nav-link">Facility Simulation</a>
+      </nav>
+      <div class="landing-nav-actions">
+        <button type="button" class="btn btn-ghost" onclick="showAuth('login')">Log in</button>
+        <button type="button" class="btn btn-primary" onclick="showAuth('signup')">Get Started</button>
       </div>
     </header>
-    <section style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 4rem 2rem; background: #fafafa;">
-      <h1 style="font-size: 3rem; max-width: 800px; margin-bottom: 1.5rem; color: #111;">Complete visibility and operational intelligence for your warehouse</h1>
-      <p style="font-size: 1.25rem; color: #555; max-width: 600px; margin-bottom: 3rem; line-height: 1.6;">
-        WareFlow gives managers real-time inventory tracking, physical warehouse mapping, intelligent order fulfillment, workforce management, and demand forecasting in one unified platform.
+
+    <div class="landing-hero">
+      <div class="landing-badge">
+        <span class="status-dot" style="background: var(--beam);"></span>
+        Operational Intelligence for Logistics
+      </div>
+      <h1 class="landing-title">Complete visibility and operational intelligence for your warehouse</h1>
+      <p class="landing-lead">
+        Real-time inventory tracking, physical warehouse mapping, intelligent job fulfillment, and demand forecasting in one unified platform.
       </p>
-      <div style="display: flex; gap: 1.5rem; flex-wrap: wrap; justify-content: center;">
-        <div style="background: #fff; padding: 1.5rem; border-radius: 8px; border: 1px solid #eee; width: 250px; text-align: left;">
-          <i data-icon="snow" style="font-size: 2rem; color: #f5b335; margin-bottom: 1rem;"></i>
-          <h3 style="margin-bottom: 0.5rem;">Inventory Control</h3>
-          <p style="color: #666; font-size: 0.9rem;">Track stock levels, monitor reorder thresholds, and map locations.</p>
+      <div class="landing-cta-group">
+        <button type="button" class="btn btn-primary btn-lg" onclick="showAuth('signup')">Get Started &rarr;</button>
+        <button type="button" class="btn btn-secondary btn-lg" onclick="showAuth('login')">Sign In to Workspace</button>
+      </div>
+
+      <!-- Interactive Warehouse Architecture Visualization -->
+      <div class="landing-console" data-scene-host id="architecture">
+        <div class="landing-console-bar">
+          <div class="landing-console-dots">
+            <span class="landing-console-dot"></span>
+            <span class="landing-console-dot"></span>
+            <span class="landing-console-dot"></span>
+            <span style="margin-left: 8px;">Facility Digital Twin &middot; Isometric Layer View</span>
+          </div>
+          <span class="landing-console-dot active" title="Engine Active"></span>
         </div>
-        <div style="background: #fff; padding: 1.5rem; border-radius: 8px; border: 1px solid #eee; width: 250px; text-align: left;">
-          <i data-icon="users" style="font-size: 2rem; color: #f5b335; margin-bottom: 1rem;"></i>
-          <h3 style="margin-bottom: 0.5rem;">Workforce Management</h3>
-          <p style="color: #666; font-size: 0.9rem;">Balance workloads and intelligently assign picking and putaway jobs.</p>
+        <div class="landing-console-canvas">
+          <div class="scene" data-scene></div>
         </div>
-        <div style="background: #fff; padding: 1.5rem; border-radius: 8px; border: 1px solid #eee; width: 250px; text-align: left;">
-          <i data-icon="rank" style="font-size: 2rem; color: #f5b335; margin-bottom: 1rem;"></i>
-          <h3 style="margin-bottom: 0.5rem;">AI Forecasting</h3>
-          <p style="color: #666; font-size: 0.9rem;">Predict 7-day and 30-day demand to proactively manage stock and storage.</p>
+        <div class="landing-console-caption">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span class="status-badge status-normal"><span class="status-dot"></span> Interactive Simulation</span>
+            <span style="color: #9FB2BF;">Move cursor to inspect multi-depth storage racks, staging bays, and automated transit corridors.</span>
+          </div>
+          <span style="color: #6C8293; font-size: 12.5px; font-variant-numeric: tabular-nums;">Illustrative Model &bull; Parallax Depth 24px</span>
         </div>
       </div>
-      <button class="btn btn-primary btn-block" style="margin-top: 4rem; max-width: 300px; font-size: 1.1rem; padding: 1rem;" onclick="showAuth('signup')">Get Started Now</button>
+    </div>
+
+    <!-- Capabilities Section -->
+    <section class="landing-section" id="capabilities">
+      <div class="landing-section-head">
+        <h2>Engineered for Modern Logistics</h2>
+        <p>Purpose-built capabilities to streamline warehouse operations, eliminate bottlenecks, and maintain strict inventory accuracy.</p>
+      </div>
+      <div class="landing-capabilities">
+        <div class="landing-card">
+          <div class="landing-card-icon">
+            <i data-icon="grid"></i>
+          </div>
+          <h3>Warehouse Mapping</h3>
+          <p>Interactive spatial grid mapping aisles, racks, tiers, and cells with real-time temperature, capacity, and utilization tracking.</p>
+          <span class="landing-card-tag"><i data-icon="check"></i> Multi-zone physical layout</span>
+        </div>
+        <div class="landing-card">
+          <div class="landing-card-icon amber">
+            <i data-icon="users"></i>
+          </div>
+          <h3>Workforce Management</h3>
+          <p>Intelligent job queue allocation balancing pick, putaway, and cycle count workloads dynamically across active employee shifts.</p>
+          <span class="landing-card-tag" style="color: var(--beam-deep);"><i data-icon="check"></i> Shift workload balancing</span>
+        </div>
+        <div class="landing-card">
+          <div class="landing-card-icon green">
+            <i data-icon="rank"></i>
+          </div>
+          <h3>AI Forecasting</h3>
+          <p>Automated 7-day and 30-day demand predictions, anomaly detection for stagnant lots, and proactive stock replenishment triggers.</p>
+          <span class="landing-card-tag" style="color: var(--ok);"><i data-icon="check"></i> Proactive reorder warnings</span>
+        </div>
+      </div>
     </section>
-    <footer style="padding: 2rem; text-align: center; background: #fff; color: #888; border-top: 1px solid #eee;">
-      © 2026 WareFlow. Built for logistics and operations.
+
+    <footer class="landing-footer">
+      &copy; 2026 WareFlow. Built for logistics, cold storage, retail, and operations.
     </footer>
   </main>
 
   <main class="auth" id="authView" style="display: none;">
     <!-- left: the form -->
     <section class="auth-pane">
-      <header>
-        <a class="brand" href="index.html" aria-label="WareFlow home"><span data-logo></span>WareFlow</a>
+      <header class="auth-top">
+        <a class="brand" href="#" onclick="showLanding(); return false;" aria-label="WareFlow home"><span data-logo></span>WareFlow</a>
+        <button type="button" class="btn btn-ghost btn-sm" onclick="showLanding()">&larr; Back to Home</button>
       </header>
 
       <div class="auth-card">
@@ -150,12 +204,28 @@
   </main>
 
   <script>
+    function showLanding() {
+      const landing = document.getElementById('landingView');
+      const auth = document.getElementById('authView');
+      if (auth) auth.style.display = 'none';
+      if (landing) landing.style.display = 'flex';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (window.WF && window.WF.recalculateScenes) {
+        window.WF.recalculateScenes();
+      }
+    }
+
     function showAuth(mode) {
-      document.getElementById('landingView').style.display = 'none';
-      document.getElementById('authView').style.display = 'flex';
-      // Trigger click on the correct tab if UI exists
+      const landing = document.getElementById('landingView');
+      const auth = document.getElementById('authView');
+      if (landing) landing.style.display = 'none';
+      if (auth) auth.style.display = 'grid';
       const targetBtn = document.querySelector(`button[data-mode="${mode}"]`);
       if (targetBtn) targetBtn.click();
+      window.scrollTo({ top: 0, behavior: 'instant' });
+      if (window.WF && window.WF.recalculateScenes) {
+        window.WF.recalculateScenes();
+      }
     }
     
     // Automatically redirect if already logged in

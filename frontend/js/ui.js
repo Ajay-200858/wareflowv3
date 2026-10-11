@@ -271,6 +271,9 @@
   }
 
   WF.scene = (el) => {
+    if (!el || el.dataset.sceneInit === '1') return;
+    el.dataset.sceneInit = '1';
+
     const layers = sceneLayers().map((l) => {
       const d = document.createElement('div');
       d.className = 'layer';
@@ -285,11 +288,11 @@
 
     function frame() {
       raf = 0;
-      cx += (tx - cx) * 0.09;
-      cy += (ty - cy) * 0.09;
+      cx += (tx - cx) * 0.08;
+      cy += (ty - cy) * 0.08;
       const s = useScroll ? Math.min(Math.max(window.scrollY, 0), 520) : 0;
       layers.forEach((l) => {
-        l.el.style.transform = 'translate3d(' + (-cx * l.d * 34).toFixed(2) + 'px,' + (-cy * l.d * 18 + s * l.d * 0.3).toFixed(2) + 'px,0)';
+        l.el.style.transform = 'translate3d(' + (-cx * l.d * 24).toFixed(2) + 'px,' + (-cy * l.d * 14 + s * l.d * 0.25).toFixed(2) + 'px,0)';
       });
       if (Math.abs(tx - cx) > 0.002 || Math.abs(ty - cy) > 0.002) kick();
     }
@@ -297,14 +300,22 @@
 
     host.addEventListener('pointermove', (e) => {
       const r = host.getBoundingClientRect();
-      tx = ((e.clientX - r.left) / r.width - 0.5) * 2;
-      ty = ((e.clientY - r.top) / r.height - 0.5) * 2;
+      if (!r.width || !r.height) return;
+      tx = Math.max(-1, Math.min(1, ((e.clientX - r.left) / r.width - 0.5) * 2));
+      ty = Math.max(-1, Math.min(1, ((e.clientY - r.top) / r.height - 0.5) * 2));
       kick();
     });
     host.addEventListener('pointerleave', () => { tx = 0; ty = 0; kick(); });
     if (useScroll) window.addEventListener('scroll', kick, { passive: true });
+    window.addEventListener('resize', () => { if (visible) kick(); }, { passive: true });
     new IntersectionObserver((en) => { visible = en[0].isIntersecting; if (visible) kick(); }).observe(host);
     kick();
+  };
+
+  WF.recalculateScenes = () => {
+    document.querySelectorAll('[data-scene]').forEach((el) => {
+      if (!el.dataset.sceneInit) WF.scene(el);
+    });
   };
 
   /* ---------- boot ---------- */
