@@ -30,6 +30,10 @@
     },
 
     async fetchAll() {
+      const sess = window.WF && window.WF.store ? window.WF.store.session() : null;
+      if (!sess || !sess.user || (sess.user.role && sess.user.role.toUpperCase() === 'EMPLOYEE')) {
+        return;
+      }
       try {
         const [
           overview, products, inventory, orders, jobs, employees, recommendations

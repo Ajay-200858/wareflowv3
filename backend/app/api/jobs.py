@@ -5,7 +5,7 @@ from typing import List, Optional
 from datetime import datetime
 
 from app.database.connection import get_db
-from app.core.dependencies import get_current_active_user
+from app.core.dependencies import get_current_active_user, get_current_active_manager
 from app.models.user import User
 from app.models.job import Job, JobItem
 from app.models.order import Order
@@ -34,7 +34,7 @@ def get_jobs(db: Session = Depends(get_db), current_user: User = Depends(get_cur
     return result
 
 @router.put("/{job_id}/assign")
-def assign_job(job_id: int, employee_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_active_user)):
+def assign_job(job_id: int, employee_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_active_manager)):
     from app.models.employee import EmployeeAvailability
     job = db.query(Job).filter(Job.id == job_id, Job.company_id == current_user.company_id).first()
     if not job:
@@ -65,11 +65,18 @@ def assign_job(job_id: int, employee_id: int, db: Session = Depends(get_db), cur
         
     return {"status": "success", "message": "Job assigned"}
 
+def _verify_job_ownership(job: Job, current_user: User, db: Session):
+    if current_user.role == "EMPLOYEE":
+        emp = db.query(Employee).filter(Employee.user_id == current_user.id, Employee.company_id == current_user.company_id).first()
+        if not emp or job.employee_id != emp.id:
+            raise HTTPException(status_code=403, detail="Cannot operate on job not assigned to you")
+
 @router.put("/{job_id}/accept")
 def accept_job(job_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_active_user)):
     job = db.query(Job).filter(Job.id == job_id, Job.company_id == current_user.company_id).first()
     if not job:
         raise HTTPException(status_code=404, detail="Job not found")
+    _verify_job_ownership(job, current_user, db)
         
     if job.status != "ASSIGNED":
         raise HTTPException(status_code=400, detail="Job is not assigned to anyone")
@@ -79,11 +86,28 @@ def accept_job(job_id: int, db: Session = Depends(get_db), current_user: User = 
     db.commit()
     return {"status": "success", "message": "Job accepted"}
 
+@router.put("/{job_id}/start")
+def start_job(job_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_active_user)):
+    job = db.query(Job).filter(Job.id == job_id, Job.company_id == current_user.company_id).first()
+    if not job:
+        raise HTTPException(status_code=404, detail="Job not found")
+    _verify_job_ownership(job, current_user, db)
+        
+    if job.status not in ["ASSIGNED", "ACCEPTED"]:
+        raise HTTPException(status_code=400, detail=f"Cannot start job in {job.status} status")
+        
+    job.status = "STARTED"
+    if not job.started_at:
+        job.started_at = datetime.utcnow()
+    db.commit()
+    return {"status": "success", "message": "Job started"}
+
 @router.put("/{job_id}/reject")
 def reject_job(job_id: int, reason: str = "No reason provided", db: Session = Depends(get_db), current_user: User = Depends(get_current_active_user)):
     job = db.query(Job).filter(Job.id == job_id, Job.company_id == current_user.company_id).first()
     if not job:
         raise HTTPException(status_code=404, detail="Job not found")
+    _verify_job_ownership(job, current_user, db)
         
     if job.status not in ["ASSIGNED", "ACCEPTED"]:
         raise HTTPException(status_code=400, detail="Job cannot be rejected from current state")
@@ -112,6 +136,7 @@ def complete_job(job_id: int, db: Session = Depends(get_db), current_user: User 
     job = db.query(Job).filter(Job.id == job_id, Job.company_id == current_user.company_id).first()
     if not job:
         raise HTTPException(status_code=404, detail="Job not found")
+    _verify_job_ownership(job, current_user, db)
         
     if job.status not in ["ACCEPTED", "STARTED"]:
         raise HTTPException(status_code=400, detail="Job must be accepted before completing")

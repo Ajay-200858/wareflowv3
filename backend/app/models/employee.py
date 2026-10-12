@@ -12,13 +12,17 @@ class Employee(Base):
     role_type = Column(String(50)) # e.g. Picker, Packer, Driver
     status = Column(String(50), default="ACTIVE")
     current_workload = Column(Float, default=0.0)
+    warehouse_id = Column(Integer, ForeignKey("warehouses.id"), nullable=True)
+    employee_code = Column(String(50), nullable=True, index=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     company = relationship("Company")
+    warehouse = relationship("Warehouse")
     user = relationship("User")
     skills = relationship("EmployeeSkill", back_populates="employee")
     shifts = relationship("EmployeeShift", back_populates="employee")
     performance = relationship("EmployeePerformance", back_populates="employee")
+    attendance = relationship("EmployeeAttendance", back_populates="employee")
 
 class EmployeeSkill(Base):
     __tablename__ = "employee_skills"
@@ -60,3 +64,19 @@ class EmployeePerformance(Base):
     period = Column(String(50)) # e.g. '2023-10'
 
     employee = relationship("Employee", back_populates="performance")
+
+class EmployeeAttendance(Base):
+    __tablename__ = "employee_attendance"
+    id = Column(Integer, primary_key=True, index=True)
+    employee_id = Column(Integer, ForeignKey("employees.id"), nullable=False)
+    company_id = Column(Integer, ForeignKey("companies.id"), nullable=False)
+    date = Column(DateTime(timezone=True), default=func.now())
+    check_in = Column(DateTime(timezone=True), nullable=True)
+    check_out = Column(DateTime(timezone=True), nullable=True)
+    status = Column(String(50), default="PRESENT") # PRESENT, LATE, HALF_DAY, ABSENT
+    working_hours = Column(Float, default=0.0)
+    notes = Column(String(255), nullable=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+    employee = relationship("Employee", back_populates="attendance")
+    company = relationship("Company")

@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from app.api import auth, dashboard, products, inventory, warehouse, orders, jobs, employees, ai, notifications
+from app.api import auth, dashboard, products, inventory, warehouse, orders, jobs, employees, ai, notifications, employee_portal
 
 api_router = APIRouter()
 api_router.include_router(auth.router, prefix="/auth", tags=["auth"])
@@ -12,3 +12,4 @@ api_router.include_router(jobs.router, prefix="/jobs", tags=["jobs"])
 api_router.include_router(employees.router, prefix="/employees", tags=["employees"])
 api_router.include_router(ai.router, prefix="/ai", tags=["ai"])
 api_router.include_router(notifications.router, prefix="/notifications", tags=["notifications"])
+api_router.include_router(employee_portal.router, prefix="/employee", tags=["employee"])

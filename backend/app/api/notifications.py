@@ -43,6 +43,8 @@ def mark_as_read(notification_id: int, db: Session = Depends(get_db), current_us
     notif = db.query(Notification).filter(Notification.id == notification_id, Notification.company_id == current_user.company_id).first()
     if not notif:
         raise HTTPException(status_code=404, detail="Notification not found")
+    if current_user.role not in ["MANAGER", "ADMIN"] and notif.user_id != current_user.id:
+        raise HTTPException(status_code=403, detail="Not authorized to access this notification")
     notif.is_read = True
     db.commit()
     return {"status": "success"}

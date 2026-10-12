@@ -44,7 +44,7 @@ def test_caspian_test_dispatch_live(auth_headers):
         "title": "Automated Caspian Live Test",
         "message": "Testing delivery pipeline stages with real Caspian credentials.",
         "type": "INFO",
-        "channel": "discord",
+        "channel": "telegram",
         "recipient": "alerts@wareflow.internal"
     }
 

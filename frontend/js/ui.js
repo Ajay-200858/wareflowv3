@@ -2,10 +2,24 @@
    WareFlow v3 — shared UI helpers (loaded on every page, before the page's own script)
    Everything hangs off one global object: window.WF
    ===================================================================== */
+
+/* Centralized Indian Rupee (INR) currency formatter */
+window.formatCurrency = function(amount) {
+  const num = Number(amount);
+  return new Intl.NumberFormat('en-IN', {
+    style: 'currency',
+    currency: 'INR',
+    currencyDisplay: 'symbol',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  }).format(isNaN(num) ? 0 : num);
+};
+
 (function () {
   'use strict';
 
   const WF = (window.WF = window.WF || {});
+  WF.formatCurrency = window.formatCurrency;
   WF.reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* ---------- shared reference data ---------- */
@@ -32,6 +46,21 @@
   WF.esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   WF.fmtSize = (b) => (b < 1024 ? b + ' B' : b < 1048576 ? (b / 1024).toFixed(0) + ' KB' : (b / 1048576).toFixed(1) + ' MB');
   WF.num = (n) => new Intl.NumberFormat('en-IN').format(n);
+  
+  /* Centralized Indian Rupee (INR) currency formatter */
+  const inrFormatter = new Intl.NumberFormat('en-IN', {
+    style: 'currency',
+    currency: 'INR',
+    currencyDisplay: 'symbol',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
+  WF.formatCurrency = (amount) => {
+    const num = Number(amount);
+    return inrFormatter.format(isNaN(num) ? 0 : num);
+  };
+  window.formatCurrency = WF.formatCurrency;
+
   WF.uid = () => Math.random().toString(36).slice(2, 9);
   WF.tween = (from, to, dur, fn) => {
     if (WF.reduced) { fn(to); return; }

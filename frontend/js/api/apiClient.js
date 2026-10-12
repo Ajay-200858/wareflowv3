@@ -2,15 +2,15 @@ const API_BASE_URL = "http://localhost:8000/api";
 
 const apiClient = {
     getToken() {
-        return localStorage.getItem("wf_token");
+        return sessionStorage.getItem("wf_token");
     },
     
     setToken(token) {
-        localStorage.setItem("wf_token", token);
+        sessionStorage.setItem("wf_token", token);
     },
     
     clearToken() {
-        localStorage.removeItem("wf_token");
+        sessionStorage.removeItem("wf_token");
     },
     
     async request(endpoint, method = "GET", body = null) {
@@ -72,6 +72,8 @@ const apiClient = {
     auth: {
         login: (email, password) => apiClient.request("/auth/login", "POST", { email, password }),
         register: (email, password, company_name, industry) => apiClient.request("/auth/register", "POST", { email, password, company_name, industry, role: "MANAGER" }),
+        employeeRegister: (payload) => apiClient.request("/auth/employee-register", "POST", payload),
+        getInvitationInfo: (code) => apiClient.request(`/auth/invitation-info?code=${encodeURIComponent(code)}`),
         me: () => apiClient.request("/auth/me")
     },
     
@@ -172,12 +174,28 @@ const apiClient = {
         getAll: () => apiClient.request("/employees"),
         create: (payload) => apiClient.request("/employees", "POST", payload),
         update: (id, payload) => apiClient.request(`/employees/${id}`, "PUT", payload),
+        getDetails: (id) => apiClient.request(`/employees/${id}/details`),
+        assignWarehouse: (id, warehouseId) => apiClient.request(`/employees/${id}/assign-warehouse?warehouse_id=${warehouseId}`, "POST"),
+        deactivate: (id) => apiClient.request(`/employees/${id}/deactivate`, "POST"),
+        activate: (id) => apiClient.request(`/employees/${id}/activate`, "POST"),
+        addSkill: (id, skillName, level = 1) => apiClient.request(`/employees/${id}/skills?skill_name=${encodeURIComponent(skillName)}&level=${level}`, "POST"),
+        deleteSkill: (id, skillId) => apiClient.request(`/employees/${id}/skills/${skillId}`, "DELETE"),
+        getInvitations: () => apiClient.request("/employees/invitations"),
+        createInvitation: (payload) => apiClient.request("/employees/invitations", "POST", payload),
+        revokeInvitation: (id) => apiClient.request(`/employees/invitations/${id}/revoke`, "POST"),
+        getSalarySummary: (period) => apiClient.request(`/employees/salary/summary${period ? `?period=${encodeURIComponent(period)}` : ''}`),
+        getSalaryRules: () => apiClient.request("/employees/salary/rules"),
+        createSalaryRule: (payload) => apiClient.request("/employees/salary-rules", "POST", payload),
+        getSalaryRecords: (period, employeeId) => apiClient.request(`/employees/salary/records?${period ? `period=${encodeURIComponent(period)}&` : ''}${employeeId ? `employee_id=${employeeId}` : ''}`),
+        getSalaryBreakdown: (id, period) => apiClient.request(`/employees/${id}/salary-breakdown?period=${encodeURIComponent(period)}`),
+        finalizeSalary: (id, period, status = "FINALIZED") => apiClient.request(`/employees/${id}/finalize-salary?period=${encodeURIComponent(period)}&status=${status}`, "POST"),
+        addSalaryAdjustment: (recordId, amount, reason) => apiClient.request(`/employees/salary/records/${recordId}/adjustment`, "POST", { amount, reason }),
+        updateSalaryStatus: (recordId, status) => apiClient.request(`/employees/salary/records/${recordId}/status`, "POST", { status }),
         getShifts: (id) => apiClient.request(`/employees/${id}/shifts`),
         createShift: (id, payload) => apiClient.request(`/employees/${id}/shifts`, "POST", payload),
         setAvailability: (id, payload) => apiClient.request(`/employees/${id}/availability`, "POST", payload),
         calculateWorkload: (id) => apiClient.request(`/employees/${id}/calculate_workload`, "POST"),
         calculateSalary: (id, period) => apiClient.request(`/employees/${id}/calculate-salary?period=${encodeURIComponent(period)}`, "POST"),
-        createSalaryRule: (payload) => apiClient.request("/employees/salary-rules", "POST", payload),
         importCSV: (formData) => {
             const token = apiClient.getToken();
             return fetch(`${API_BASE_URL}/employees/import`, {
@@ -219,6 +237,27 @@ const apiClient = {
         getUnreadCount: () => apiClient.request('/notifications/unread-count'),
         markAsRead: (id) => apiClient.request(`/notifications/${id}/read`, "POST"),
         markAllAsRead: () => apiClient.request('/notifications/read-all', "POST")
+    },
+    
+    employee: {
+        getMe: () => apiClient.request('/employee/me'),
+        updateMe: (payload) => apiClient.request('/employee/me', 'PUT', payload),
+        getDashboard: () => apiClient.request('/employee/dashboard'),
+        getJobs: (status) => apiClient.request(`/employee/jobs${status ? '?status=' + encodeURIComponent(status) : ''}`),
+        getJob: (id) => apiClient.request(`/employee/jobs/${id}`),
+        acceptJob: (id) => apiClient.request(`/employee/jobs/${id}/accept`, 'POST'),
+        startJob: (id) => apiClient.request(`/employee/jobs/${id}/start`, 'POST'),
+        rejectJob: (id, reason) => apiClient.request(`/employee/jobs/${id}/reject`, 'POST', { reason }),
+        completeJob: (id) => apiClient.request(`/employee/jobs/${id}/complete`, 'POST'),
+        getWorkspace: () => apiClient.request('/employee/workspace'),
+        getSalary: () => apiClient.request('/employee/salary'),
+        getAttendance: () => apiClient.request('/employee/attendance'),
+        checkIn: () => apiClient.request('/employee/attendance/check-in', 'POST'),
+        checkOut: () => apiClient.request('/employee/attendance/check-out', 'POST'),
+        getNotifications: () => apiClient.request('/employee/notifications'),
+        markNotificationRead: (id) => apiClient.request(`/employee/notifications/${id}/read`, 'POST'),
+        markAllNotificationsRead: () => apiClient.request('/employee/notifications/read-all', 'POST'),
+        getAiInsights: () => apiClient.request('/employee/ai-insights')
     }
 };
 

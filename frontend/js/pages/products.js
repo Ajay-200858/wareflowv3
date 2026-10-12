@@ -219,7 +219,7 @@ window.pages.products.showDetail = async function(productId) {
                      <div><dt>ID</dt><dd>${p.id}</dd></div>
                      <div><dt>SKU</dt><dd>${p.sku}</dd></div>
                      <div><dt>Unit Type</dt><dd>${p.unit}</dd></div>
-                     <div><dt>Price</dt><dd>₹${p.price}</dd></div>
+                     <div><dt>Price</dt><dd>${window.formatCurrency(p.price)}</dd></div>
                      <div><dt>Current Stock</dt><dd>${totalInv}</dd></div>
                    </dl>
                  </div>

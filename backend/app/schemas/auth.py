@@ -19,3 +19,10 @@ class TokenData(BaseModel):
 class LoginRequest(BaseModel):
     email: str
     password: str
+
+class EmployeeRegisterRequest(BaseModel):
+    full_name: str
+    email: str
+    password: str
+    invitation_code: str
+    employee_code: Optional[str] = None

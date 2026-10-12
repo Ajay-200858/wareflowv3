@@ -113,19 +113,79 @@
       </header>
 
       <div class="auth-card">
-        <div class="seg" id="seg" data-mode="signup" role="tablist" aria-label="Choose how to continue" data-reveal style="--d:.05s">
+        <div class="seg" id="seg" data-mode="login" role="tablist" aria-label="Choose how to continue" data-reveal style="--d:.05s">
           <span class="seg-ind"></span>
-          <button type="button" role="tab" data-mode="signup" class="on" aria-selected="true">Create account</button>
-          <button type="button" role="tab" data-mode="login" aria-selected="false">Log in</button>
+          <button type="button" role="tab" data-mode="login" class="on" aria-selected="true">Log in</button>
+          <button type="button" role="tab" data-mode="employee" aria-selected="false">Join as Employee</button>
+          <button type="button" role="tab" data-mode="signup" aria-selected="false">Create Company</button>
         </div>
 
         <div class="auth-head" id="authHead" data-reveal style="--d:.15s">
-          <h1>Set up your warehouse workspace</h1>
-          <p>Create an account, then add your sites, team and paperwork.</p>
+          <h1>Welcome back to WareFlow</h1>
+          <p>Log in to access your operations dashboard.</p>
         </div>
 
-        <!-- create account -->
-        <form class="auth-form" id="signupForm" novalidate data-reveal style="--d:.25s">
+        <!-- log in -->
+        <form class="auth-form" id="loginForm" novalidate data-reveal style="--d:.25s">
+          <div class="field">
+            <label for="liEmail">Work email</label>
+            <input class="input" id="liEmail" name="liEmail" type="email" autocomplete="email" placeholder="you@company.com">
+          </div>
+          <div class="field">
+            <label for="liPass">Password</label>
+            <div class="pw">
+              <input class="input" id="liPass" name="liPass" type="password" autocomplete="current-password" placeholder="Your password">
+              <button type="button" class="icon-btn toggle" aria-label="Show password"><i data-icon="eye"></i></button>
+            </div>
+          </div>
+          <button class="btn btn-primary btn-block" type="submit">Log in</button>
+          <p class="swap">Employee with invitation? <button type="button" data-switch="employee">Join Company</button> &bull; Or <button type="button" data-switch="signup">Create Company</button></p>
+        </form>
+
+        <!-- join as employee -->
+        <form class="auth-form" id="employeeRegisterForm" novalidate hidden>
+          <div class="field">
+            <label for="empInvCode">Company Invitation Code<span class="req">*</span></label>
+            <div style="display: flex; gap: 8px;">
+              <input class="input" id="empInvCode" name="empInvCode" style="text-transform: uppercase; font-family: monospace; letter-spacing: 1px;" placeholder="e.g. WF-INV-ABC12345">
+              <button type="button" id="btnVerifyCode" class="btn btn-secondary btn-sm" style="white-space: nowrap;">Verify Code</button>
+            </div>
+            <div id="invCodeStatus" style="font-size: 0.8rem; margin-top: 5px; display: none;"></div>
+          </div>
+
+          <div class="field">
+            <label for="empFullName">Full name<span class="req">*</span></label>
+            <input class="input" id="empFullName" name="empFullName" placeholder="e.g. Arjun Kumar">
+          </div>
+
+          <div class="field">
+            <label for="empEmail">Email address<span class="req">*</span></label>
+            <input class="input" id="empEmail" name="empEmail" type="email" autocomplete="email" placeholder="arjun@company.com">
+          </div>
+
+          <div class="row2">
+            <div class="field">
+              <label for="empPass">Password<span class="req">*</span></label>
+              <div class="pw">
+                <input class="input" id="empPass" name="empPass" type="password" autocomplete="new-password" placeholder="At least 8 characters">
+                <button type="button" class="icon-btn toggle" aria-label="Show password"><i data-icon="eye"></i></button>
+              </div>
+            </div>
+            <div class="field">
+              <label for="empPass2">Confirm password<span class="req">*</span></label>
+              <div class="pw">
+                <input class="input" id="empPass2" name="empPass2" type="password" autocomplete="new-password" placeholder="Type it again">
+                <button type="button" class="icon-btn toggle" aria-label="Show password"><i data-icon="eye"></i></button>
+              </div>
+            </div>
+          </div>
+
+          <button class="btn btn-primary btn-block" type="submit">Join Company & Open Dashboard</button>
+          <p class="swap">Already registered? <button type="button" data-switch="login">Log in</button></p>
+        </form>
+
+        <!-- create company account -->
+        <form class="auth-form" id="signupForm" novalidate hidden>
           <div class="field">
             <label for="suName">Company name<span class="req">*</span></label>
             <input class="input" id="suName" name="suName" autocomplete="organization" placeholder="e.g. Apex Cold Logistics Pvt Ltd">
@@ -134,7 +194,7 @@
           <fieldset class="field">
             <legend>What kind of warehouse do you run?<span class="req">*</span></legend>
             <div class="opt-grid">
-              <label class="opt"><input type="radio" name="type" value="cold_storage_co"><span class="opt-card"><i data-icon="snow"></i><b>Cold storage</b><small>Food, pharma and other temperature-sensitive stock</small></span></label>
+              <label class="opt"><input type="radio" name="type" value="cold_storage_co" checked><span class="opt-card"><i data-icon="snow"></i><b>Cold storage</b><small>Food, pharma and other temperature-sensitive stock</small></span></label>
               <label class="opt"><input type="radio" name="type" value="fashion_co"><span class="opt-card"><i data-icon="shirt"></i><b>Fashion &amp; apparel</b><small>Seasonal stock with fast-moving sizes and styles</small></span></label>
               <label class="opt"><input type="radio" name="type" value="electronics_co"><span class="opt-card"><i data-icon="chip"></i><b>Electronics &amp; hardware</b><small>High-value parts, devices and accessories</small></span></label>
             </div>
@@ -165,23 +225,6 @@
 
           <button class="btn btn-primary btn-block" type="submit">Create account</button>
           <p class="swap">Already have an account? <button type="button" data-switch="login">Log in</button></p>
-        </form>
-
-        <!-- log in -->
-        <form class="auth-form" id="loginForm" novalidate hidden>
-          <div class="field">
-            <label for="liEmail">Admin email</label>
-            <input class="input" id="liEmail" name="liEmail" type="email" autocomplete="email" placeholder="admin@company.com">
-          </div>
-          <div class="field">
-            <label for="liPass">Password</label>
-            <div class="pw">
-              <input class="input" id="liPass" name="liPass" type="password" autocomplete="current-password" placeholder="Your password">
-              <button type="button" class="icon-btn toggle" aria-label="Show password"><i data-icon="eye"></i></button>
-            </div>
-          </div>
-          <button class="btn btn-primary btn-block" type="submit">Log in</button>
-          <p class="swap">New to WareFlow? <button type="button" data-switch="signup">Create an account</button></p>
         </form>
       </div>
 
@@ -228,13 +271,13 @@
       }
     }
     
-    // Automatically redirect if already logged in
-    if (localStorage.getItem('wf_token')) {
-        const session = JSON.parse(localStorage.getItem('wf_session_data') || '{}');
-        if (session && session.user && session.user.setup_completed) {
-             window.location.replace('app.html');
-        } else if (session && session.user && session.user.role && session.user.role.toLowerCase() === 'employee') {
-             window.location.replace('app.html#employeeportal');
+    // Automatically redirect if already logged in in this tab
+    if (sessionStorage.getItem('wf_token')) {
+        const session = JSON.parse(sessionStorage.getItem('wf_session_data') || '{}');
+        if (session && session.user && session.user.role && session.user.role.toUpperCase() === 'EMPLOYEE') {
+             window.location.replace('app.html#employee-overview');
+        } else if (session && session.user && session.user.setup_completed) {
+             window.location.replace('app.html#overview');
         } else {
              window.location.replace('onboarding.html');
         }

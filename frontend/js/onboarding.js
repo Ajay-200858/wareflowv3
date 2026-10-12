@@ -2,7 +2,7 @@
   'use strict';
   
   document.addEventListener('DOMContentLoaded', () => {
-    const token = localStorage.getItem('wf_token');
+    const token = window.apiClient.getToken();
     if (!token) {
         window.location.href = 'index.html';
         return;
@@ -20,7 +20,7 @@
     let currentStep = 1;
     const totalSteps = 5;
     
-    const state = JSON.parse(localStorage.getItem('wf_setup_draft')) || {
+    const state = JSON.parse(sessionStorage.getItem('wf_setup_draft')) || {
         companyName: '',
         companyAddress: '',
         warehouseManual: '',
@@ -134,7 +134,7 @@
         state.companyName = document.getElementById('coName').value.trim();
         state.companyAddress = document.getElementById('coAddress').value.trim();
         state.warehouseManual = document.getElementById('manualWhName').value.trim();
-        localStorage.setItem('wf_setup_draft', JSON.stringify(state));
+        sessionStorage.setItem('wf_setup_draft', JSON.stringify(state));
         
         // Show toast
         const toasts = document.getElementById('toasts');
@@ -234,7 +234,7 @@
                 }
             }
             
-            localStorage.removeItem('wf_setup_draft');
+            sessionStorage.removeItem('wf_setup_draft');
             
             // Update local session data so next page load doesn't bounce us back
             const session = window.WF.store.session();

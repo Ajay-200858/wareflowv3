@@ -7,20 +7,20 @@
         const token = window.apiClient.getToken();
         if (!token) return null;
         try {
-            const raw = localStorage.getItem('wf_session_data');
+            const raw = sessionStorage.getItem('wf_session_data');
             return raw ? JSON.parse(raw) : null;
         } catch(e) { return null; }
     },
     setSession: (s) => {
-        if (!s) localStorage.removeItem('wf_session_data');
-        else localStorage.setItem('wf_session_data', JSON.stringify(s));
+        if (!s) sessionStorage.removeItem('wf_session_data');
+        else sessionStorage.setItem('wf_session_data', JSON.stringify(s));
     },
     clearSession: () => {
         window.apiClient.clearToken();
-        localStorage.removeItem('wf_session_data');
+        sessionStorage.removeItem('wf_session_data');
     },
     saveCompany: (c) => {
-        localStorage.setItem('wf_company_setup', JSON.stringify(c));
+        sessionStorage.setItem('wf_company_setup', JSON.stringify(c));
         return true;
     }
   };
@@ -28,7 +28,8 @@
   WF.requireAuth = (requireSetup = true) => {
     const s = WF.store.session();
     if (!s) { WF.store.clearSession(); location.replace('index.html'); return null; }
-    if (requireSetup && s.user && s.user.setup_completed === false) {
+    const isEmployee = s.user && s.user.role && s.user.role.toUpperCase() === 'EMPLOYEE';
+    if (!isEmployee && requireSetup && s.user && s.user.setup_completed === false) {
       location.replace('onboarding.html');
       return null;
     }
@@ -39,23 +40,26 @@
 
   document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('[data-logout]').forEach((b) => b.addEventListener('click', WF.logout));
-    if (document.getElementById('signupForm')) initAuthPage();
+    if (document.getElementById('loginForm')) initAuthPage();
   });
 
   function initAuthPage() {
     const s = WF.store.session();
-    if (s) {
-      if (s.user && s.user.setup_completed === false) {
+    if (s && s.user) {
+      if (s.user.role && s.user.role.toUpperCase() === 'EMPLOYEE') {
+        location.replace('app.html#employee-overview');
+      } else if (s.user.setup_completed === false) {
         location.replace('onboarding.html');
       } else {
-        location.replace('app.html');
+        location.replace('app.html#overview');
       }
       return;
     }
 
     const forms = { 
       login: document.getElementById('loginForm'),
-      signup: document.getElementById('signupForm')
+      signup: document.getElementById('signupForm'),
+      employee: document.getElementById('employeeRegisterForm')
     };
 
     const emailOk = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
@@ -76,29 +80,116 @@
     const switchButtons = document.querySelectorAll('[data-switch]');
 
     function setMode(mode) {
-      document.getElementById('seg').dataset.mode = mode;
+      const seg = document.getElementById('seg');
+      if (seg) seg.dataset.mode = mode;
+
+      // Hide all forms first
+      if (forms.login) forms.login.hidden = true;
+      if (forms.signup) forms.signup.hidden = true;
+      if (forms.employee) forms.employee.hidden = true;
+
+      // Update segment tab buttons
+      segButtons.forEach(btn => {
+        const match = btn.dataset.mode === mode;
+        btn.classList.toggle('on', match);
+        btn.setAttribute('aria-selected', match ? 'true' : 'false');
+      });
+
       if (mode === 'login') {
-        forms.signup.hidden = true;
-        forms.login.hidden = false;
-        authHead.innerHTML = '<h1>Welcome back to WareFlow</h1><p>Log in to manage your workspace.</p>';
-        segButtons[0].classList.remove('on');
-        segButtons[0].setAttribute('aria-selected', 'false');
-        segButtons[1].classList.add('on');
-        segButtons[1].setAttribute('aria-selected', 'true');
+        if (forms.login) forms.login.hidden = false;
+        if (authHead) authHead.innerHTML = '<h1>Welcome back to WareFlow</h1><p>Log in to access your operations dashboard.</p>';
+      } else if (mode === 'employee') {
+        if (forms.employee) forms.employee.hidden = false;
+        if (authHead) authHead.innerHTML = '<h1>Join your team on WareFlow</h1><p>Enter your company invitation code to connect your employee workspace.</p>';
       } else {
-        forms.login.hidden = true;
-        forms.signup.hidden = false;
-        authHead.innerHTML = '<h1>Set up your warehouse workspace</h1><p>Create an account, then add your sites, team and paperwork.</p>';
-        segButtons[1].classList.remove('on');
-        segButtons[1].setAttribute('aria-selected', 'false');
-        segButtons[0].classList.add('on');
-        segButtons[0].setAttribute('aria-selected', 'true');
+        if (forms.signup) forms.signup.hidden = false;
+        if (authHead) authHead.innerHTML = '<h1>Set up your warehouse workspace</h1><p>Create a company account to start organizing sites, team, and inventory.</p>';
       }
     }
 
     segButtons.forEach(btn => btn.addEventListener('click', () => setMode(btn.dataset.mode)));
     switchButtons.forEach(btn => btn.addEventListener('click', () => setMode(btn.dataset.switch)));
 
+    // Verify invitation code helper
+    const btnVerifyCode = document.getElementById('btnVerifyCode');
+    const empInvCode = document.getElementById('empInvCode');
+    const invCodeStatus = document.getElementById('invCodeStatus');
+
+    if (btnVerifyCode && empInvCode && invCodeStatus) {
+      btnVerifyCode.addEventListener('click', async () => {
+        const code = empInvCode.value.trim().toUpperCase();
+        if (!code) {
+          invCodeStatus.style.display = 'block';
+          invCodeStatus.style.color = 'var(--bad)';
+          invCodeStatus.textContent = 'Please enter an invitation code.';
+          return;
+        }
+
+        btnVerifyCode.classList.add('loading');
+        try {
+          const info = await window.apiClient.auth.getInvitationInfo(code);
+          invCodeStatus.style.display = 'block';
+          invCodeStatus.style.color = 'var(--good)';
+          invCodeStatus.innerHTML = `&#10003; <strong>${info.company_name}</strong> &bull; Role: <strong>${info.role_type}</strong>`;
+          if (info.target_email && forms.employee && forms.employee.empEmail) {
+            forms.employee.empEmail.value = info.target_email;
+          }
+        } catch(err) {
+          invCodeStatus.style.display = 'block';
+          invCodeStatus.style.color = 'var(--bad)';
+          invCodeStatus.textContent = err.message || 'Invalid or expired invitation code.';
+        } finally {
+          btnVerifyCode.classList.remove('loading');
+        }
+      });
+    }
+
+    // 1. Employee Registration Form
+    if (forms.employee) forms.employee.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const f = forms.employee;
+      WF.clearErrors(f);
+
+      const code = f.empInvCode.value.trim().toUpperCase();
+      const name = f.empFullName.value.trim();
+      const email = f.empEmail.value.trim();
+      const pass = f.empPass.value;
+      const pass2 = f.empPass2.value;
+
+      if (!code) { WF.setError(f.empInvCode, 'Company invitation code is required.'); return; }
+      if (!name) { WF.setError(f.empFullName, 'Full name is required.'); return; }
+      if (!emailOk(email)) { WF.setError(f.empEmail, 'Enter a valid email.'); return; }
+      if (pass.length < 8) { WF.setError(f.empPass, 'Password must be at least 8 characters.'); return; }
+      if (pass !== pass2) { WF.setError(f.empPass2, 'Passwords do not match.'); return; }
+
+      const btn = f.querySelector('button[type="submit"]');
+      btn.classList.add('loading');
+
+      try {
+        const result = await window.apiClient.auth.employeeRegister({
+          full_name: name,
+          email: email,
+          password: pass,
+          invitation_code: code
+        });
+
+        window.apiClient.setToken(result.access_token);
+        WF.store.setSession({
+          companyId: result.company.id,
+          email: result.user.email,
+          user: result.user,
+          company: result.company
+        });
+
+        WF.toast('Welcome to WareFlow! Account registered.', 'ok');
+        setTimeout(() => location.replace('app.html#employee-overview'), 600);
+      } catch (err) {
+        btn.classList.remove('loading');
+        WF.setError(f.empPass2, err.message || 'Registration failed');
+      }
+    });
+
+    // 2. Manager Login Form
     if (forms.login) forms.login.addEventListener('submit', async (e) => {
       e.preventDefault();
       const f = forms.login;
@@ -122,8 +213,13 @@
           });
           WF.toast('Welcome back.', 'ok');
           setTimeout(() => {
-              if (result.user.setup_completed === false) location.replace('onboarding.html');
-              else location.replace('app.html');
+              if (result.user.role && result.user.role.toUpperCase() === 'EMPLOYEE') {
+                location.replace('app.html#employee-overview');
+              } else if (result.user.setup_completed === false) {
+                location.replace('onboarding.html');
+              } else {
+                location.replace('app.html#overview');
+              }
           }, 600);
       } catch (err) {
           btn.classList.remove('loading');
@@ -131,6 +227,7 @@
       }
     });
 
+    // 3. Manager/Company Signup Form
     if (forms.signup) forms.signup.addEventListener('submit', async (e) => {
       e.preventDefault();
       const f = forms.signup;
