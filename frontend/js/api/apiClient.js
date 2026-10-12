@@ -1,6 +1,10 @@
-const API_BASE_URL = "http://localhost:8000/api";
+const API_BASE_URL = (typeof window !== "undefined" && (window.WAREFLOW_API_URL || localStorage.getItem("wf_api_base_url"))) || "http://localhost:8000/api";
 
 const apiClient = {
+    getBaseUrl() {
+        return API_BASE_URL;
+    },
+
     getToken() {
         return sessionStorage.getItem("wf_token");
     },
@@ -11,6 +15,26 @@ const apiClient = {
     
     clearToken() {
         sessionStorage.removeItem("wf_token");
+    },
+
+    async checkBackendStatus() {
+        try {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 2500);
+            const healthUrl = API_BASE_URL.replace(/\/api\/?$/, "/api/health");
+            const response = await fetch(healthUrl, {
+                method: "GET",
+                signal: controller.signal
+            });
+            clearTimeout(timeoutId);
+            if (response.ok) {
+                const data = await response.json();
+                return { online: true, data };
+            }
+            return { online: false, status: response.status };
+        } catch (error) {
+            return { online: false, error: error.message || "Unreachable" };
+        }
     },
     
     async request(endpoint, method = "GET", body = null) {
@@ -62,8 +86,13 @@ const apiClient = {
             return data;
         } catch (error) {
             console.error("API Request failed:", error);
-            if (error instanceof TypeError && error.message === "Failed to fetch") {
-                throw new Error("Network error or CORS issue. Please check your connection and ensure the server is running.");
+            if (error instanceof TypeError && (error.message === "Failed to fetch" || error.name === "TypeError")) {
+                const isLocal = typeof window !== "undefined" && (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1");
+                if (!isLocal) {
+                    throw new Error("Local backend offline. The FastAPI server and MySQL database run locally (http://localhost:8000). Please start the backend on your machine to perform this operation.");
+                } else {
+                    throw new Error("Cannot connect to local backend at http://localhost:8000. Please ensure the FastAPI server is running.");
+                }
             }
             throw error;
         }

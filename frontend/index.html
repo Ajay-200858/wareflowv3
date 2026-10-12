@@ -14,6 +14,25 @@
 <body class="auth-page">
   <div class="toasts" id="toasts" aria-live="polite"></div>
 
+  <!-- Live Preview / Demo Notice Banner -->
+  <aside class="demo-banner" id="demoBanner" aria-label="Deployment status notice">
+    <div class="demo-banner-inner">
+      <div class="demo-banner-content">
+        <span class="demo-badge"><i data-icon="info"></i> Web Preview</span>
+        <p class="demo-banner-text">
+          <strong>GitHub Pages Showcase:</strong> Exploring WareFlow's interactive landing experience &amp; facility digital twin. Workspace authentication, database operations, and AI models run via the local FastAPI backend.
+        </p>
+      </div>
+      <div class="demo-banner-actions">
+        <span class="backend-status-pill" id="backendStatusPill" title="Checks connectivity to local FastAPI server">
+          <span class="status-dot"></span>
+          <span id="backendStatusText">Checking Backend...</span>
+        </span>
+        <a href="https://github.com/Ajay-200858/wareflowv3#readme" target="_blank" rel="noopener noreferrer" class="btn btn-xs btn-ghost">Setup Guide &rarr;</a>
+      </div>
+    </div>
+  </aside>
+
   <main id="landingView" class="landing">
     <header class="landing-nav">
       <a class="brand" href="#" onclick="showLanding(); return false;" aria-label="WareFlow home"><span data-logo></span>WareFlow</a>
@@ -113,6 +132,15 @@
       </header>
 
       <div class="auth-card">
+        <!-- Local Backend Requirement Notice -->
+        <div class="auth-notice-card" id="authNoticeCard">
+          <div class="auth-notice-icon"><i data-icon="info"></i></div>
+          <div>
+            <strong>Local Backend Required</strong>
+            Authentication and live workspace data connect to a local FastAPI backend (<code>http://localhost:8000</code>). To sign in and access the dashboard, ensure your local backend is running.
+          </div>
+        </div>
+
         <div class="seg" id="seg" data-mode="login" role="tablist" aria-label="Choose how to continue" data-reveal style="--d:.05s">
           <span class="seg-ind"></span>
           <button type="button" role="tab" data-mode="login" class="on" aria-selected="true">Log in</button>
@@ -271,20 +299,55 @@
       }
     }
     
-    // Automatically redirect if already logged in in this tab
+    // Automatically redirect if valid session data exists in this tab
     if (sessionStorage.getItem('wf_token')) {
+      try {
         const session = JSON.parse(sessionStorage.getItem('wf_session_data') || '{}');
-        if (session && session.user && session.user.role && session.user.role.toUpperCase() === 'EMPLOYEE') {
-             window.location.replace('app.html#employee-overview');
-        } else if (session && session.user && session.user.setup_completed) {
-             window.location.replace('app.html#overview');
+        if (session && session.user && session.user.email) {
+          if (session.user.role && session.user.role.toUpperCase() === 'EMPLOYEE') {
+            window.location.replace('app.html#employee-overview');
+          } else if (session.user.setup_completed) {
+            window.location.replace('app.html#overview');
+          } else {
+            window.location.replace('onboarding.html');
+          }
         } else {
-             window.location.replace('onboarding.html');
+          sessionStorage.removeItem('wf_token');
         }
+      } catch (e) {
+        sessionStorage.removeItem('wf_token');
+      }
     }
   </script>
   <script src="js/ui.js"></script>
   <script src="js/api/apiClient.js"></script>
   <script src="js/auth.js"></script>
+  <script>
+    (async function initBackendHealth() {
+      const pill = document.getElementById('backendStatusPill');
+      const text = document.getElementById('backendStatusText');
+      if (!pill || !text || !window.apiClient) return;
+
+      try {
+        const res = await window.apiClient.checkBackendStatus();
+        if (res.online) {
+          pill.classList.remove('offline');
+          pill.classList.add('online');
+          text.textContent = 'Backend: Connected';
+          pill.title = 'Connected to FastAPI backend (' + window.apiClient.getBaseUrl() + ')';
+        } else {
+          pill.classList.remove('online');
+          pill.classList.add('offline');
+          const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+          text.textContent = isLocal ? 'Backend: Offline (Port 8000)' : 'Backend: Local Only (Offline)';
+          pill.title = 'FastAPI backend is offline. Start the backend locally to enable full operations.';
+        }
+      } catch (e) {
+        pill.classList.remove('online');
+        pill.classList.add('offline');
+        text.textContent = 'Backend: Local Only (Offline)';
+      }
+    })();
+  </script>
 </body>
 </html>

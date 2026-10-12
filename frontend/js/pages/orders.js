@@ -205,7 +205,7 @@ window.pages.orders.showImportModal = function() {
             <div id="o-import-feedback" style="margin-bottom:1rem;"></div>
             
             <div style="display:flex; justify-content:space-between; align-items:center; margin-top:2rem;">
-                <a href="/api/orders/sample-csv" onclick="event.preventDefault(); window.pages.orders.downloadSampleCSV();" style="color:var(--primary);"><i data-icon="download"></i> Download Sample CSV</a>
+                <a href="#" onclick="event.preventDefault(); window.pages.orders.downloadSampleCSV();" style="color:var(--primary);"><i data-icon="download"></i> Download Sample CSV</a>
                 <div style="display:flex; gap:8px;">
                   <button type="button" class="btn btn-ghost" onclick="document.getElementById('order-import-scrim').remove()">Cancel</button>
                   <button type="button" class="btn btn-primary" id="o-import-btn" onclick="window.pages.orders.processImport()">Upload & Import</button>
