@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Sign In — WareFlow Commerce</title>
+  <link rel="stylesheet" href="assets/css/theme.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/portal.css">
+</head>
+<body style="background:var(--color-bg-subtle);">
+
+  <!-- Header -->
+  <header id="site-header" class="site-header"></header>
+
+  <main class="auth-wrapper">
+    <div class="auth-card">
+      <div class="auth-header">
+        <div class="brand-icon" style="margin:0 auto 12px; width:44px; height:44px; font-size:20px;">W</div>
+        <h1 class="auth-title">Customer Sign In</h1>
+        <p class="auth-subtitle">Access your company orders, order tracking, and stock reservations</p>
+      </div>
+
+      <div id="login-error-box" class="badge badge-error" style="width:100%; padding:10px 14px; margin-bottom:16px; display:none; line-height:1.4;"></div>
+
+      <form id="customer-login-form">
+        <div class="form-group">
+          <label class="form-label" for="login-email">Business Email Address</label>
+          <input type="email" id="login-email" class="form-input" placeholder="buyer@company.com" required autocomplete="email">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="login-password">Password</label>
+          <input type="password" id="login-password" class="form-input" placeholder="••••••••" required autocomplete="current-password">
+        </div>
+
+        <button type="submit" id="login-submit-btn" class="btn btn-primary btn-block" style="margin-top:12px;">
+          Sign In to Customer Portal
+        </button>
+      </form>
+
+      <div style="margin-top:24px; padding-top:20px; border-top:1px solid var(--color-border-subtle); text-align:center; font-size:13px; color:var(--color-text-secondary);">
+        Need a customer procurement account? <br>
+        <a href="register.html" style="color:var(--color-brand-primary); font-weight:600;">Register your business here →</a>
+      </div>
+
+      <div style="margin-top:16px; text-align:center; font-size:12px; color:var(--color-text-muted);">
+        Warehouse staff or managers? <a href="../index.html" style="text-decoration:underline;">Internal Portal Login</a>
+      </div>
+    </div>
+  </main>
+
+  <footer id="site-footer" class="site-footer"></footer>
+
+  <script src="runtime-config.js"></script>
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/demo-data.js"></script>
+  <script src="assets/js/tracker.js"></script>
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/cart.js"></script>
+  <script src="assets/js/components/navbar.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const form = document.getElementById("customer-login-form");
+      const emailInput = document.getElementById("login-email");
+      const passwordInput = document.getElementById("login-password");
+      const submitBtn = document.getElementById("login-submit-btn");
+      const errorBox = document.getElementById("login-error-box");
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const returnTo = urlParams.get("return_to") || "account.html";
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const email = emailInput.value.trim();
+        const password = passwordInput.value;
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Verifying...";
+        errorBox.style.display = "none";
+
+        try {
+          await window.WF_AUTH.login(email, password);
+          window.location.href = decodeURIComponent(returnTo);
+        } catch (err) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Sign In to Customer Portal";
+          errorBox.textContent = err.message || "Invalid email or password.";
+          errorBox.style.display = "block";
+        }
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Multi-SKU Bulk Order & CSV Upload — WareFlow Commerce</title>
+  <meta name="description" content="Procure multiple products simultaneously with instant warehouse inventory validation, CSV file upload, and transparent stock verification.">
+  <link rel="stylesheet" href="assets/css/theme.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/portal.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header id="site-header" class="site-header"></header>
+
+  <div style="background:#ffffff; border-bottom:1px solid var(--color-border-subtle); padding:20px 0;">
+    <div class="container">
+      <div style="font-size:12px; color:var(--color-text-muted); margin-bottom:4px;">
+        <a href="index.html">Home</a> / <a href="products.html">Catalogue</a> / <span>Bulk Procurement</span>
+      </div>
+      <h1 style="font-size:26px;">Multi-SKU Bulk Ordering</h1>
+    </div>
+  </div>
+
+  <main class="container" style="padding-top:var(--space-2xl); padding-bottom:var(--space-3xl);">
+    <!-- Tabs Nav -->
+    <div class="bulk-tab-nav">
+      <button type="button" id="tab-manual-btn" class="bulk-tab-btn active">
+        1. Multi-Row SKU Entry Matrix
+      </button>
+      <button type="button" id="tab-csv-btn" class="bulk-tab-btn">
+        2. Upload Inventory CSV Bill of Materials
+      </button>
+    </div>
+
+    <!-- TAB 1: Manual Multi-Row Matrix -->
+    <section id="tab-manual-content">
+      <div class="card" style="margin-bottom:24px;">
+        <div class="card-header">
+          <div>
+            <span class="card-title">Direct Line Entry Matrix</span>
+            <div style="font-size:12px; color:#6b7280; margin-top:2px;">Enter multiple SKUs and quantities to perform live batch validation.</div>
+          </div>
+          <button type="button" id="matrix-add-row-btn" class="btn btn-secondary btn-sm">+ Add Line</button>
+        </div>
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th style="width:40%;">Product SKU</th>
+                <th style="width:20%;">Quantity</th>
+                <th style="width:35%;">Warehouse Stock & Price Status</th>
+                <th style="width:5%;">Action</th>
+              </tr>
+            </thead>
+            <tbody id="matrix-rows-body">
+              <!-- Rendered by bulk-order.js -->
+            </tbody>
+          </table>
+        </div>
+        <div class="card-footer" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+          <button type="button" id="matrix-validate-btn" class="btn btn-primary">
+            Validate Rows against Warehouse Stock
+          </button>
+          <div style="font-size:12px; color:#6b7280;">
+            Real-time verification against active floor inventory.
+          </div>
+        </div>
+      </div>
+
+      <div id="matrix-validation-result" style="display:none; width:100%; padding:14px; margin-bottom:20px; font-size:14px;"></div>
+
+      <div id="matrix-action-box" style="display:none; text-align:right;">
+        <button type="button" id="matrix-submit-btn" class="btn btn-accent btn-lg">
+          Add Validated Rows to Cart & Proceed →
+        </button>
+      </div>
+    </section>
+
+    <!-- TAB 2: CSV Upload -->
+    <section id="tab-csv-content" style="display:none;">
+      <div class="card" style="margin-bottom:24px;">
+        <div class="card-header">
+          <span class="card-title">Upload Bulk Order Spreadsheet</span>
+          <button type="button" id="download-template-btn" class="btn btn-outline btn-sm">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+            Download CSV Template
+          </button>
+        </div>
+        <div class="card-body">
+          <p style="font-size:14px; color:var(--color-text-secondary); margin-bottom:16px;">
+            Your CSV must contain <code>sku</code> and <code>quantity</code> headers. Example:
+          </p>
+          <pre style="background:var(--color-bg-subtle); padding:10px 14px; border-radius:var(--radius-md); font-size:13px; font-family:var(--font-family-mono); margin-bottom:24px;">sku,quantity
+P-001,100
+P-002,50</pre>
+
+          <!-- Dropzone -->
+          <div id="csv-dropzone" class="dropzone-box">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--color-brand-primary)" stroke-width="1.5" style="margin:0 auto 12px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
+            <div style="font-weight:700; font-size:16px; margin-bottom:4px;">Drag & Drop your CSV file here</div>
+            <div style="font-size:13px; color:#6b7280; margin-bottom:16px;">or click to browse from your device</div>
+            <button type="button" class="btn btn-secondary btn-sm">Select CSV File</button>
+            <input type="file" id="csv-file-input" accept=".csv" style="display:none;">
+          </div>
+        </div>
+      </div>
+
+      <!-- Live CSV Validation Results Container -->
+      <div id="csv-validation-result" style="display:none;"></div>
+
+      <div id="csv-action-box" style="display:none; text-align:right; margin-top:20px;">
+        <button type="button" id="csv-submit-btn" class="btn btn-accent btn-lg">
+          Confirm & Add All Valid Items to Cart →
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer id="site-footer" class="site-footer"></footer>
+
+  <!-- Scripts -->
+  <script src="runtime-config.js"></script>
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/demo-data.js"></script>
+  <script src="assets/js/tracker.js"></script>
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/cart.js"></script>
+  <script src="assets/js/components/navbar.js"></script>
+  <script src="assets/js/pages/bulk-order.js"></script>
+</body>
+</html>

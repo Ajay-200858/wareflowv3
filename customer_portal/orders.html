@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order History & Fulfilment — WareFlow Commerce</title>
+  <link rel="stylesheet" href="assets/css/theme.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/portal.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header id="site-header" class="site-header"></header>
+
+  <div style="background:#ffffff; border-bottom:1px solid var(--color-border-subtle); padding:20px 0;">
+    <div class="container">
+      <div style="font-size:12px; color:var(--color-text-muted); margin-bottom:4px;">
+        <a href="index.html">Home</a> / <a href="account.html">Account</a> / <span>Order History</span>
+      </div>
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+        <div>
+          <h1 style="font-size:26px;">Order History & Tracking</h1>
+          <p style="font-size:14px; color:var(--color-text-muted); margin:0;">
+            Track active warehouse allocations, order status, and reorder past shipments.
+          </p>
+        </div>
+        <div>
+          <a href="bulk-order.html" class="btn btn-secondary btn-sm">+ New Bulk Order</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main class="container" style="padding-top:var(--space-2xl); padding-bottom:var(--space-3xl);">
+    
+    <!-- Table Container -->
+    <div id="orders-table-card" class="card" style="display:none; overflow-x:auto;">
+      <table class="table" style="width:100%; min-width:750px;">
+        <thead>
+          <tr>
+            <th>Order Ref</th>
+            <th>Date Placed</th>
+            <th>Items</th>
+            <th>Total Amount</th>
+            <th>Payment</th>
+            <th>Fulfilment Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="orders-table-body">
+          <!-- Populated by orders.js -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Empty State -->
+    <div id="orders-empty-state" class="empty-state" style="display:none; background:#ffffff; border:1px solid var(--color-border-subtle); border-radius:var(--radius-lg); padding:48px 24px;">
+      <div class="empty-state-icon">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
+      </div>
+      <h3 style="font-size:18px; margin-bottom:8px;">No orders found</h3>
+      <p style="color:var(--color-text-muted); max-width:400px; margin:0 auto 20px;">
+        You haven't placed any wholesale or commercial orders yet.
+      </p>
+      <div style="display:flex; gap:12px; justify-content:center;">
+        <a href="products.html" class="btn btn-primary">Browse Catalogue</a>
+        <a href="bulk-order.html" class="btn btn-secondary">Upload Bulk CSV</a>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer id="site-footer" class="site-footer"></footer>
+
+  <!-- Scripts -->
+  <script src="runtime-config.js"></script>
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/demo-data.js"></script>
+  <script src="assets/js/tracker.js"></script>
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/cart.js"></script>
+  <script src="assets/js/components/navbar.js"></script>
+  <script src="assets/js/pages/orders.js"></script>
+</body>
+</html>

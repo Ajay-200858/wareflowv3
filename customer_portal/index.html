@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WareFlow Commerce — Direct Warehouse Fulfilment Platform</title>
+  <meta name="description" content="Procure industrial, beverage, dry goods, and warehouse supplies directly from WareFlow distribution centers with real-time stock allocation.">
+  <link rel="stylesheet" href="assets/css/theme.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/portal.css">
+</head>
+<body>
+
+  <!-- Dynamic Header -->
+  <header id="site-header" class="site-header"></header>
+
+  <!-- Editorial Hero -->
+  <section class="hero-editorial">
+    <div class="container hero-grid">
+      <div>
+        <div class="hero-tagline">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+          Direct Facility Procurement
+        </div>
+        <h1 class="hero-title">Authoritative Warehouse Supply. Direct from the Floor.</h1>
+        <p class="hero-desc">
+          Procure goods directly from active warehouse inventory with guaranteed real-time stock allocation, multi-SKU bulk ordering, and machine-learning personalized recommendations.
+        </p>
+        <div class="hero-ctas">
+          <a href="products.html" class="btn btn-accent btn-lg">Browse Catalogue</a>
+          <a href="bulk-order.html" class="btn btn-secondary btn-lg" style="background:rgba(255,255,255,0.1); color:#ffffff; border-color:rgba(255,255,255,0.25);">
+            Bulk Order via CSV
+          </a>
+        </div>
+      </div>
+
+      <div class="hero-panel">
+        <div style="font-weight:700; font-size:18px; margin-bottom:16px; color:#ffffff;">Distribution Hub Metrics</div>
+        <div class="hero-metric-row">
+          <div class="hero-metric">
+            <div class="hero-metric-val">100%</div>
+            <div class="hero-metric-label">Stock Transparency</div>
+          </div>
+          <div class="hero-metric">
+            <div class="hero-metric-val">300+</div>
+            <div class="hero-metric-label">Active SKUs</div>
+          </div>
+          <div class="hero-metric">
+            <div class="hero-metric-val">B2B</div>
+            <div class="hero-metric-label">Invoice Terms</div>
+          </div>
+          <div class="hero-metric">
+            <div class="hero-metric-val">&lt; 24h</div>
+            <div class="hero-metric-label">Dispatch Readiness</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Category Discovery Section -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Explore by Product Category</h2>
+          <p class="section-subtitle">Real-time availability across active warehouse storage zones</p>
+        </div>
+        <a href="products.html" class="btn btn-outline btn-sm">View All Categories →</a>
+      </div>
+      <div id="home-categories-grid" class="category-cards-grid">
+        <!-- Rendered by home.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Recommended for You (ML Personalization) -->
+  <section class="section section-alt">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <div id="recs-explain-badge" class="badge badge-info" style="margin-bottom:8px;">Suggested for You</div>
+          <h2 class="section-title">Recommended Products</h2>
+          <p class="section-subtitle">Personalized product discovery powered by WareFlow machine-learning ranking models</p>
+        </div>
+        <a href="products.html" class="btn btn-secondary btn-sm">Browse All →</a>
+      </div>
+      <div id="home-recommendations-grid" class="products-grid">
+        <!-- Rendered by home.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Bulk Procurement Banner -->
+  <section class="section" style="padding: var(--space-2xl) 0;">
+    <div class="container">
+      <div class="card" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-left: 4px solid var(--color-brand-primary); padding: var(--space-xl);">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px;">
+          <div style="max-width:650px;">
+            <div class="badge badge-neutral" style="margin-bottom:8px;">B2B Supply Procurement</div>
+            <h3 style="font-size:22px; margin-bottom:6px;">Need to Order Multiple SKUs in High Volume?</h3>
+            <p style="color:var(--color-text-secondary); font-size:14px; line-height:1.6;">
+              Upload your inventory bill of materials via standard CSV or use our multi-row SKU matrix with instant warehouse stock validation, line-level pricing, and atomic reservations.
+            </p>
+          </div>
+          <div>
+            <a href="bulk-order.html" class="btn btn-primary btn-lg">Open Bulk Order Matrix →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Popular & In-Stock Section -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Ready-to-Ship Warehouse Stock</h2>
+          <p class="section-subtitle">High-turnover products currently in stock and eligible for immediate pick-and-pack</p>
+        </div>
+        <a href="products.html?in_stock_only=true" class="btn btn-outline btn-sm">See All In-Stock →</a>
+      </div>
+      <div id="home-popular-grid" class="products-grid">
+        <!-- Rendered by home.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer id="site-footer" class="site-footer"></footer>
+
+  <script src="runtime-config.js"></script>
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/demo-data.js"></script>
+  <script src="assets/js/tracker.js"></script>
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/cart.js"></script>
+  <script src="assets/js/components/navbar.js"></script>
+  <script src="assets/js/pages/home.js"></script>
+</body>
+</html>

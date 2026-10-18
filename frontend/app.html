@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>WareFlow · App</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Instrument+Sans:wght@400..700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Instrument+Sans:wght@400..700&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/components.css">
   <link rel="stylesheet" href="css/warehouse.css">
@@ -15,12 +18,13 @@
       var r = document.documentElement;
       r.classList.add('js', 'no-tr');
       var s = 'open';
-      try { s = localStorage.getItem('wf2_sidebar') || 'open'; } catch (e) {}
+      try { s = localStorage.getItem('wf2_sidebar') || 'open'; } catch (e) { }
       r.dataset.sidebar = s;
       r.dataset.drawer = 'closed';
     })();
   </script>
 </head>
+
 <body class="app-page">
   <div class="toasts" id="toasts" aria-live="polite"></div>
   <div class="scrim" data-sidebar-close></div>
@@ -31,7 +35,8 @@
       <div class="sb-in">
         <div class="sb-top">
           <a class="brand" href="#overview" style="color:#fff"><span data-logo></span>WareFlow</a>
-          <button class="icon-btn" type="button" data-sidebar-toggle aria-label="Hide sidebar"><i data-icon="panel"></i></button>
+          <button class="icon-btn" type="button" data-sidebar-toggle aria-label="Hide sidebar"><i
+              data-icon="panel"></i></button>
         </div>
 
         <div class="sb-company">
@@ -42,7 +47,8 @@
         <div id="sidebar-nav"></div>
 
         <div class="sb-foot">
-          <button class="sb-btn" type="button" data-sidebar-toggle><i data-icon="panel"></i><span data-sb-label>Hide sidebar</span><span class="kbd">[</span></button>
+          <button class="sb-btn" type="button" data-sidebar-toggle><i data-icon="panel"></i><span data-sb-label>Hide
+              sidebar</span><span class="kbd">[</span></button>
           <button class="sb-btn out" type="button" data-logout><i data-icon="logout"></i>Log out</button>
         </div>
       </div>
@@ -50,22 +56,27 @@
 
     <div class="main">
       <header class="topbar" id="topbar">
-        <button class="icon-btn" type="button" data-sidebar-toggle aria-label="Toggle sidebar"><i data-icon="panel"></i></button>
+        <button class="icon-btn" type="button" data-sidebar-toggle aria-label="Toggle sidebar"><i
+            data-icon="panel"></i></button>
         <div class="crumbs"><span>WareFlow</span><span class="sep">/</span><b id="topbar-title">Overview</b></div>
         <div class="spacer"></div>
-        <button class="icon-btn" type="button" id="btn-notifications"><i data-icon="bell"></i><span class="badge" id="notif-badge" style="display:none"></span></button>
-        <button class="chip" id="btn-profile" style="cursor:pointer; background:none; border:none; display:inline-flex; align-items:center; gap:8px;"><i data-icon="user"></i><span id="userEmail"></span></button>
+        <button class="icon-btn" type="button" id="btn-notifications"><i data-icon="bell"></i><span class="badge"
+            id="notif-badge" style="display:none"></span></button>
+        <button class="chip" id="btn-profile"
+          style="cursor:pointer; background:none; border:none; display:inline-flex; align-items:center; gap:8px;"><i
+            data-icon="user"></i><span id="userEmail"></span></button>
       </header>
 
       <!-- Router View Container -->
       <main class="content" id="router-view">
-         <!-- Content injected here -->
+        <!-- Content injected here -->
       </main>
     </div>
-    </div>
+  </div>
   </div>
 
-  <div class="modal-overlay" id="profileModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:9999; justify-content:center; align-items:center;">
+  <div class="modal-overlay" id="profileModal"
+    style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:9999; justify-content:center; align-items:center;">
     <div class="modal" style="background:#fff; padding:24px; border-radius:8px; width:400px; max-width:90%;">
       <h2>Your Profile</h2>
       <form id="profileForm" style="display:flex; flex-direction:column; gap:16px; margin-top:16px;">
@@ -86,6 +97,7 @@
   </div>
 
   <script src="js/ui.js?v=4"></script>
+  <script src="runtime-config.js"></script>
   <script src="js/api/apiClient.js?v=4"></script>
   <script src="js/auth.js?v=4"></script>
   <script src="js/pages/overview.js?v=4"></script>
@@ -106,4 +118,5 @@
   <script src="js/data/dataService.js?v=4"></script>
   <script src="js/app.js?v=4"></script>
 </body>
+
 </html>

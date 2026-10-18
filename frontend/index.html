@@ -1,16 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>WareFlow · Log in or create an account</title>
-  <meta name="description" content="WareFlow ranks every product in your warehouse by urgency and flags unusual stock for a person to check.">
+  <meta name="description"
+    content="WareFlow ranks every product in your warehouse by urgency and flags unusual stock for a person to check.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Instrument+Sans:wght@400..700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Instrument+Sans:wght@400..700&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
   <script>document.documentElement.classList.add('js');</script>
 </head>
+
 <body class="auth-page">
   <div class="toasts" id="toasts" aria-live="polite"></div>
 
@@ -20,7 +25,8 @@
       <div class="demo-banner-content">
         <span class="demo-badge"><i data-icon="info"></i> Web Preview</span>
         <p class="demo-banner-text">
-          <strong>GitHub Pages Showcase:</strong> Exploring WareFlow's interactive landing experience &amp; facility digital twin. Workspace authentication, database operations, and AI models run via the local FastAPI backend.
+          <strong>GitHub Pages Showcase:</strong> Exploring WareFlow's interactive landing experience &amp; facility
+          digital twin. Workspace authentication, database operations, and AI models run via the local FastAPI backend.
         </p>
       </div>
       <div class="demo-banner-actions">
@@ -28,14 +34,16 @@
           <span class="status-dot"></span>
           <span id="backendStatusText">Checking Backend...</span>
         </span>
-        <a href="https://github.com/Ajay-200858/wareflowv3#readme" target="_blank" rel="noopener noreferrer" class="btn btn-xs btn-ghost">Setup Guide &rarr;</a>
+        <a href="https://github.com/Ajay-200858/wareflowv3#readme" target="_blank" rel="noopener noreferrer"
+          class="btn btn-xs btn-ghost">Setup Guide &rarr;</a>
       </div>
     </div>
   </aside>
 
   <main id="landingView" class="landing">
     <header class="landing-nav">
-      <a class="brand" href="#" onclick="showLanding(); return false;" aria-label="WareFlow home"><span data-logo></span>WareFlow</a>
+      <a class="brand" href="#" onclick="showLanding(); return false;" aria-label="WareFlow home"><span
+          data-logo></span>WareFlow</a>
       <nav class="landing-nav-links" aria-label="Main Navigation">
         <a href="#capabilities" class="landing-nav-link">Capabilities</a>
         <a href="#architecture" class="landing-nav-link">Facility Simulation</a>
@@ -53,7 +61,8 @@
       </div>
       <h1 class="landing-title">Complete visibility and operational intelligence for your warehouse</h1>
       <p class="landing-lead">
-        Real-time inventory tracking, physical warehouse mapping, intelligent job fulfillment, and demand forecasting in one unified platform.
+        Real-time inventory tracking, physical warehouse mapping, intelligent job fulfillment, and demand forecasting in
+        one unified platform.
       </p>
       <div class="landing-cta-group">
         <button type="button" class="btn btn-primary btn-lg" onclick="showAuth('signup')">Get Started &rarr;</button>
@@ -77,9 +86,11 @@
         <div class="landing-console-caption">
           <div style="display: flex; align-items: center; gap: 10px;">
             <span class="status-badge status-normal"><span class="status-dot"></span> Interactive Simulation</span>
-            <span style="color: #9FB2BF;">Move cursor to inspect multi-depth storage racks, staging bays, and automated transit corridors.</span>
+            <span style="color: #9FB2BF;">Move cursor to inspect multi-depth storage racks, staging bays, and automated
+              transit corridors.</span>
           </div>
-          <span style="color: #6C8293; font-size: 12.5px; font-variant-numeric: tabular-nums;">Illustrative Model &bull; Parallax Depth 24px</span>
+          <span style="color: #6C8293; font-size: 12.5px; font-variant-numeric: tabular-nums;">Illustrative Model &bull;
+            Parallax Depth 24px</span>
         </div>
       </div>
     </div>
@@ -88,7 +99,8 @@
     <section class="landing-section" id="capabilities">
       <div class="landing-section-head">
         <h2>Engineered for Modern Logistics</h2>
-        <p>Purpose-built capabilities to streamline warehouse operations, eliminate bottlenecks, and maintain strict inventory accuracy.</p>
+        <p>Purpose-built capabilities to streamline warehouse operations, eliminate bottlenecks, and maintain strict
+          inventory accuracy.</p>
       </div>
       <div class="landing-capabilities">
         <div class="landing-card">
@@ -96,7 +108,8 @@
             <i data-icon="grid"></i>
           </div>
           <h3>Warehouse Mapping</h3>
-          <p>Interactive spatial grid mapping aisles, racks, tiers, and cells with real-time temperature, capacity, and utilization tracking.</p>
+          <p>Interactive spatial grid mapping aisles, racks, tiers, and cells with real-time temperature, capacity, and
+            utilization tracking.</p>
           <span class="landing-card-tag"><i data-icon="check"></i> Multi-zone physical layout</span>
         </div>
         <div class="landing-card">
@@ -104,16 +117,20 @@
             <i data-icon="users"></i>
           </div>
           <h3>Workforce Management</h3>
-          <p>Intelligent job queue allocation balancing pick, putaway, and cycle count workloads dynamically across active employee shifts.</p>
-          <span class="landing-card-tag" style="color: var(--beam-deep);"><i data-icon="check"></i> Shift workload balancing</span>
+          <p>Intelligent job queue allocation balancing pick, putaway, and cycle count workloads dynamically across
+            active employee shifts.</p>
+          <span class="landing-card-tag" style="color: var(--beam-deep);"><i data-icon="check"></i> Shift workload
+            balancing</span>
         </div>
         <div class="landing-card">
           <div class="landing-card-icon green">
             <i data-icon="rank"></i>
           </div>
           <h3>AI Forecasting</h3>
-          <p>Automated 7-day and 30-day demand predictions, anomaly detection for stagnant lots, and proactive stock replenishment triggers.</p>
-          <span class="landing-card-tag" style="color: var(--ok);"><i data-icon="check"></i> Proactive reorder warnings</span>
+          <p>Automated 7-day and 30-day demand predictions, anomaly detection for stagnant lots, and proactive stock
+            replenishment triggers.</p>
+          <span class="landing-card-tag" style="color: var(--ok);"><i data-icon="check"></i> Proactive reorder
+            warnings</span>
         </div>
       </div>
     </section>
@@ -127,7 +144,8 @@
     <!-- left: the form -->
     <section class="auth-pane">
       <header class="auth-top">
-        <a class="brand" href="#" onclick="showLanding(); return false;" aria-label="WareFlow home"><span data-logo></span>WareFlow</a>
+        <a class="brand" href="#" onclick="showLanding(); return false;" aria-label="WareFlow home"><span
+            data-logo></span>WareFlow</a>
         <button type="button" class="btn btn-ghost btn-sm" onclick="showLanding()">&larr; Back to Home</button>
       </header>
 
@@ -137,11 +155,14 @@
           <div class="auth-notice-icon"><i data-icon="info"></i></div>
           <div>
             <strong>Local Backend Required</strong>
-            Authentication and live workspace data connect to a local FastAPI backend (<code>http://localhost:8000</code>). To sign in and access the dashboard, ensure your local backend is running.
+            Authentication and live workspace data connect to a local FastAPI backend
+            (<code>http://localhost:8000</code>). To sign in and access the dashboard, ensure your local backend is
+            running.
           </div>
         </div>
 
-        <div class="seg" id="seg" data-mode="login" role="tablist" aria-label="Choose how to continue" data-reveal style="--d:.05s">
+        <div class="seg" id="seg" data-mode="login" role="tablist" aria-label="Choose how to continue" data-reveal
+          style="--d:.05s">
           <span class="seg-ind"></span>
           <button type="button" role="tab" data-mode="login" class="on" aria-selected="true">Log in</button>
           <button type="button" role="tab" data-mode="employee" aria-selected="false">Join as Employee</button>
@@ -157,17 +178,20 @@
         <form class="auth-form" id="loginForm" novalidate data-reveal style="--d:.25s">
           <div class="field">
             <label for="liEmail">Work email</label>
-            <input class="input" id="liEmail" name="liEmail" type="email" autocomplete="email" placeholder="you@company.com">
+            <input class="input" id="liEmail" name="liEmail" type="email" autocomplete="email"
+              placeholder="you@company.com">
           </div>
           <div class="field">
             <label for="liPass">Password</label>
             <div class="pw">
-              <input class="input" id="liPass" name="liPass" type="password" autocomplete="current-password" placeholder="Your password">
+              <input class="input" id="liPass" name="liPass" type="password" autocomplete="current-password"
+                placeholder="Your password">
               <button type="button" class="icon-btn toggle" aria-label="Show password"><i data-icon="eye"></i></button>
             </div>
           </div>
           <button class="btn btn-primary btn-block" type="submit">Log in</button>
-          <p class="swap">Employee with invitation? <button type="button" data-switch="employee">Join Company</button> &bull; Or <button type="button" data-switch="signup">Create Company</button></p>
+          <p class="swap">Employee with invitation? <button type="button" data-switch="employee">Join Company</button>
+            &bull; Or <button type="button" data-switch="signup">Create Company</button></p>
         </form>
 
         <!-- join as employee -->
@@ -175,8 +199,11 @@
           <div class="field">
             <label for="empInvCode">Company Invitation Code<span class="req">*</span></label>
             <div style="display: flex; gap: 8px;">
-              <input class="input" id="empInvCode" name="empInvCode" style="text-transform: uppercase; font-family: monospace; letter-spacing: 1px;" placeholder="e.g. WF-INV-ABC12345">
-              <button type="button" id="btnVerifyCode" class="btn btn-secondary btn-sm" style="white-space: nowrap;">Verify Code</button>
+              <input class="input" id="empInvCode" name="empInvCode"
+                style="text-transform: uppercase; font-family: monospace; letter-spacing: 1px;"
+                placeholder="e.g. WF-INV-ABC12345">
+              <button type="button" id="btnVerifyCode" class="btn btn-secondary btn-sm"
+                style="white-space: nowrap;">Verify Code</button>
             </div>
             <div id="invCodeStatus" style="font-size: 0.8rem; margin-top: 5px; display: none;"></div>
           </div>
@@ -188,22 +215,27 @@
 
           <div class="field">
             <label for="empEmail">Email address<span class="req">*</span></label>
-            <input class="input" id="empEmail" name="empEmail" type="email" autocomplete="email" placeholder="arjun@company.com">
+            <input class="input" id="empEmail" name="empEmail" type="email" autocomplete="email"
+              placeholder="arjun@company.com">
           </div>
 
           <div class="row2">
             <div class="field">
               <label for="empPass">Password<span class="req">*</span></label>
               <div class="pw">
-                <input class="input" id="empPass" name="empPass" type="password" autocomplete="new-password" placeholder="At least 8 characters">
-                <button type="button" class="icon-btn toggle" aria-label="Show password"><i data-icon="eye"></i></button>
+                <input class="input" id="empPass" name="empPass" type="password" autocomplete="new-password"
+                  placeholder="At least 8 characters">
+                <button type="button" class="icon-btn toggle" aria-label="Show password"><i
+                    data-icon="eye"></i></button>
               </div>
             </div>
             <div class="field">
               <label for="empPass2">Confirm password<span class="req">*</span></label>
               <div class="pw">
-                <input class="input" id="empPass2" name="empPass2" type="password" autocomplete="new-password" placeholder="Type it again">
-                <button type="button" class="icon-btn toggle" aria-label="Show password"><i data-icon="eye"></i></button>
+                <input class="input" id="empPass2" name="empPass2" type="password" autocomplete="new-password"
+                  placeholder="Type it again">
+                <button type="button" class="icon-btn toggle" aria-label="Show password"><i
+                    data-icon="eye"></i></button>
               </div>
             </div>
           </div>
@@ -216,37 +248,49 @@
         <form class="auth-form" id="signupForm" novalidate hidden>
           <div class="field">
             <label for="suName">Company name<span class="req">*</span></label>
-            <input class="input" id="suName" name="suName" autocomplete="organization" placeholder="e.g. Apex Cold Logistics Pvt Ltd">
+            <input class="input" id="suName" name="suName" autocomplete="organization"
+              placeholder="e.g. Apex Cold Logistics Pvt Ltd">
           </div>
 
           <fieldset class="field">
             <legend>What kind of warehouse do you run?<span class="req">*</span></legend>
             <div class="opt-grid">
-              <label class="opt"><input type="radio" name="type" value="cold_storage_co" checked><span class="opt-card"><i data-icon="snow"></i><b>Cold storage</b><small>Food, pharma and other temperature-sensitive stock</small></span></label>
-              <label class="opt"><input type="radio" name="type" value="fashion_co"><span class="opt-card"><i data-icon="shirt"></i><b>Fashion &amp; apparel</b><small>Seasonal stock with fast-moving sizes and styles</small></span></label>
-              <label class="opt"><input type="radio" name="type" value="electronics_co"><span class="opt-card"><i data-icon="chip"></i><b>Electronics &amp; hardware</b><small>High-value parts, devices and accessories</small></span></label>
+              <label class="opt"><input type="radio" name="type" value="cold_storage_co" checked><span
+                  class="opt-card"><i data-icon="snow"></i><b>Cold storage</b><small>Food, pharma and other
+                    temperature-sensitive stock</small></span></label>
+              <label class="opt"><input type="radio" name="type" value="fashion_co"><span class="opt-card"><i
+                    data-icon="shirt"></i><b>Fashion &amp; apparel</b><small>Seasonal stock with fast-moving sizes and
+                    styles</small></span></label>
+              <label class="opt"><input type="radio" name="type" value="electronics_co"><span class="opt-card"><i
+                    data-icon="chip"></i><b>Electronics &amp; hardware</b><small>High-value parts, devices and
+                    accessories</small></span></label>
             </div>
           </fieldset>
 
           <div class="field">
             <label for="suEmail">Admin email<span class="req">*</span></label>
-            <input class="input" id="suEmail" name="suEmail" type="email" autocomplete="email" placeholder="admin@company.com">
+            <input class="input" id="suEmail" name="suEmail" type="email" autocomplete="email"
+              placeholder="admin@company.com">
           </div>
 
           <div class="row2">
             <div class="field">
               <label for="suPass">Password<span class="req">*</span></label>
               <div class="pw">
-                <input class="input" id="suPass" name="suPass" type="password" autocomplete="new-password" placeholder="At least 8 characters">
-                <button type="button" class="icon-btn toggle" aria-label="Show password"><i data-icon="eye"></i></button>
+                <input class="input" id="suPass" name="suPass" type="password" autocomplete="new-password"
+                  placeholder="At least 8 characters">
+                <button type="button" class="icon-btn toggle" aria-label="Show password"><i
+                    data-icon="eye"></i></button>
               </div>
               <div class="meter" id="meter" data-score="0"><i></i><i></i><i></i><i></i><span></span></div>
             </div>
             <div class="field">
               <label for="suPass2">Confirm password<span class="req">*</span></label>
               <div class="pw">
-                <input class="input" id="suPass2" name="suPass2" type="password" autocomplete="new-password" placeholder="Type it again">
-                <button type="button" class="icon-btn toggle" aria-label="Show password"><i data-icon="eye"></i></button>
+                <input class="input" id="suPass2" name="suPass2" type="password" autocomplete="new-password"
+                  placeholder="Type it again">
+                <button type="button" class="icon-btn toggle" aria-label="Show password"><i
+                    data-icon="eye"></i></button>
               </div>
             </div>
           </div>
@@ -264,7 +308,8 @@
       <div class="scene" data-scene></div>
       <div class="vis-copy">
         <h2>See which stock needs you first.</h2>
-        <p>WareFlow scores every product by urgency and sends the odd ones to a person to check, so your team works on the right shelf first.</p>
+        <p>WareFlow scores every product by urgency and sends the odd ones to a person to check, so your team works on
+          the right shelf first.</p>
         <ul class="vis-list">
           <li><i data-icon="rank"></i>Urgency ranking for every product</li>
           <li><i data-icon="alert"></i>Unusual stock flagged for review</li>
@@ -298,7 +343,7 @@
         window.WF.recalculateScenes();
       }
     }
-    
+
     // Automatically redirect if valid session data exists in this tab
     if (sessionStorage.getItem('wf_token')) {
       try {
@@ -320,6 +365,7 @@
     }
   </script>
   <script src="js/ui.js"></script>
+  <script src="runtime-config.js"></script>
   <script src="js/api/apiClient.js"></script>
   <script src="js/auth.js"></script>
   <script>
@@ -350,4 +396,5 @@
     })();
   </script>
 </body>
+
 </html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Tracking & Fulfilment Details — WareFlow Commerce</title>
+  <link rel="stylesheet" href="assets/css/theme.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/portal.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header id="site-header" class="site-header"></header>
+
+  <div style="background:#ffffff; border-bottom:1px solid var(--color-border-subtle); padding:20px 0;">
+    <div class="container">
+      <div style="font-size:12px; color:var(--color-text-muted); margin-bottom:4px;">
+        <a href="index.html">Home</a> / <a href="account.html">Account</a> / <a href="orders.html">Orders</a> / <span>Order Tracking</span>
+      </div>
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+        <div>
+          <div style="display:flex; align-items:center; gap:12px;">
+            <h1 id="order-reference" style="font-size:24px; font-family:var(--font-family-mono); margin:0;">Loading...</h1>
+            <div id="order-status-badge"></div>
+          </div>
+          <div style="font-size:13px; color:var(--color-text-muted); margin-top:4px;">
+            Placed on <span id="order-date">—</span>
+          </div>
+        </div>
+        <div style="display:flex; gap:10px;">
+          <button type="button" id="reorder-btn" class="btn btn-primary btn-sm">
+            Reorder All Items
+          </button>
+          <button type="button" id="cancel-order-btn" class="btn btn-secondary btn-sm" style="color:#c92a2a; border-color:#ffa8a8; display:none;">
+            Cancel Order
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main class="container" style="padding-top:var(--space-2xl); padding-bottom:var(--space-3xl);">
+    
+    <!-- Fulfilment Timeline Card -->
+    <div class="card" style="margin-bottom:var(--space-2xl);">
+      <div class="card-header">
+        <span class="card-title">Authoritative Warehouse Fulfilment Milestones</span>
+      </div>
+      <div class="card-body">
+        <div id="order-timeline" class="timeline-track">
+          <!-- Populated by order-detail.js -->
+        </div>
+      </div>
+    </div>
+
+    <div style="display:grid; grid-template-columns:2fr 1fr; gap:var(--space-2xl);">
+      
+      <!-- Items Table Card -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Commercial Manifest & Order Items</span>
+        </div>
+        <div class="card-body" style="padding:0; overflow-x:auto;">
+          <table class="table" style="width:100%;">
+            <thead>
+              <tr>
+                <th>Item / SKU</th>
+                <th>Qty</th>
+                <th>Unit Price</th>
+                <th>Total</th>
+                <th>Fulfilment Status</th>
+              </tr>
+            </thead>
+            <tbody id="order-items-tbody">
+              <!-- Populated by order-detail.js -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Commercial Details Card -->
+      <div style="display:flex; flex-direction:column; gap:var(--space-xl);">
+        
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Financial Summary</span>
+          </div>
+          <div class="card-body">
+            <div style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:14px;">
+              <span style="color:var(--color-text-muted);">Subtotal</span>
+              <span id="order-subtotal" style="font-weight:600;">$0.00</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; margin-bottom:12px; font-size:14px;">
+              <span style="color:var(--color-text-muted);">Commercial Freight</span>
+              <span style="color:#2f9e44; font-weight:600;">Complimentary</span>
+            </div>
+            <div style="border-top:1px solid var(--color-border-subtle); padding-top:12px; display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-weight:700;">Total Order Value</span>
+              <span id="order-total" style="font-size:20px; font-weight:800; color:var(--color-brand-primary);">$0.00</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Delivery & Settlement Terms</span>
+          </div>
+          <div class="card-body" style="font-size:14px; line-height:1.6;">
+            <div style="margin-bottom:12px;">
+              <div style="font-weight:600; color:var(--color-text-muted); font-size:12px; text-transform:uppercase;">Delivery Address</div>
+              <div id="order-address" style="margin-top:2px;">—</div>
+            </div>
+
+            <div style="margin-bottom:12px;">
+              <div style="font-weight:600; color:var(--color-text-muted); font-size:12px; text-transform:uppercase;">Payment Terms</div>
+              <div id="order-payment-method" style="margin-top:2px;">—</div>
+              <div style="font-size:12px; color:var(--color-text-muted);">Status: <strong id="order-payment-status">—</strong></div>
+            </div>
+
+            <div>
+              <div style="font-weight:600; color:var(--color-text-muted); font-size:12px; text-transform:uppercase;">Handling Notes</div>
+              <div id="order-notes" style="margin-top:2px; color:var(--color-text-muted); font-style:italic;">—</div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <a href="orders.html" class="btn btn-secondary" style="width:100%; text-align:center;">
+            ← Return to Order History
+          </a>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer id="site-footer" class="site-footer"></footer>
+
+  <!-- Scripts -->
+  <script src="runtime-config.js"></script>
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/demo-data.js"></script>
+  <script src="assets/js/tracker.js"></script>
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/cart.js"></script>
+  <script src="assets/js/components/navbar.js"></script>
+  <script src="assets/js/pages/order-detail.js"></script>
+</body>
+</html>

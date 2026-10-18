@@ -21,6 +21,9 @@ backend/.pytest_cache/
 # Machine Learning Artifacts & Temporary Data
 *.log
 backend/logs/
+*.joblib
+*.pkl
+backend/ml_models/
 
 # IDE / Editor Files
 .vscode/
@@ -28,6 +31,10 @@ backend/logs/
 *.swp
 *.swo
 
+# Vercel Deployment Artifacts
+.vercel/
+
 # OS Artifacts
 .DS_Store
 Thumbs.db
+

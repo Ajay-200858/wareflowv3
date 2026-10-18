@@ -1,4 +1,12 @@
-const API_BASE_URL = (typeof window !== "undefined" && (window.WAREFLOW_API_URL || localStorage.getItem("wf_api_base_url"))) || "http://localhost:8000/api";
+const API_BASE_URL = (typeof window !== "undefined" && (
+    window.WAREFLOW_API_URL || 
+    localStorage.getItem("wf_api_base_url") ||
+    (window.location.hostname.includes("vercel.app") ? window.location.origin + "/api" : null)
+)) || "http://localhost:8000/api";
+
+if (typeof window !== "undefined") {
+    window.API_BASE_URL = API_BASE_URL;
+}
 
 const apiClient = {
     getBaseUrl() {
@@ -8,11 +16,11 @@ const apiClient = {
     getToken() {
         return sessionStorage.getItem("wf_token");
     },
-    
+
     setToken(token) {
         sessionStorage.setItem("wf_token", token);
     },
-    
+
     clearToken() {
         sessionStorage.removeItem("wf_token");
     },
@@ -36,29 +44,29 @@ const apiClient = {
             return { online: false, error: error.message || "Unreachable" };
         }
     },
-    
+
     async request(endpoint, method = "GET", body = null) {
         const headers = {
             "Content-Type": "application/json"
         };
-        
+
         const token = this.getToken();
         if (token) {
             headers["Authorization"] = `Bearer ${token}`;
         }
-        
+
         const config = {
             method,
             headers
         };
-        
+
         if (body) {
             config.body = JSON.stringify(body);
         }
-        
+
         try {
             const response = await fetch(`${API_BASE_URL}${endpoint}`, config);
-            
+
             if (response.status === 401) {
                 // Handle unauthorized
                 if (window.location.hash !== '') {
@@ -66,7 +74,7 @@ const apiClient = {
                 }
                 throw new Error("Unauthorized");
             }
-            
+
             let data = {};
             const contentType = response.headers.get("content-type");
             if (contentType && contentType.includes("application/json")) {
@@ -74,7 +82,7 @@ const apiClient = {
             } else {
                 data.detail = await response.text();
             }
-            
+
             if (!response.ok) {
                 let errorMsg = data.detail || data.message || `API Error (${response.status})`;
                 if (Array.isArray(errorMsg)) {
@@ -82,7 +90,7 @@ const apiClient = {
                 }
                 throw new Error(errorMsg);
             }
-            
+
             return data;
         } catch (error) {
             console.error("API Request failed:", error);
@@ -97,7 +105,7 @@ const apiClient = {
             throw error;
         }
     },
-    
+
     auth: {
         login: (email, password) => apiClient.request("/auth/login", "POST", { email, password }),
         register: (email, password, company_name, industry) => apiClient.request("/auth/register", "POST", { email, password, company_name, industry, role: "MANAGER" }),
@@ -105,15 +113,15 @@ const apiClient = {
         getInvitationInfo: (code) => apiClient.request(`/auth/invitation-info?code=${encodeURIComponent(code)}`),
         me: () => apiClient.request("/auth/me")
     },
-    
+
     users: {
         updateSetup: (payload) => apiClient.request("/auth/me/setup", "PUT", payload)
     },
-    
+
     dashboard: {
         overview: () => apiClient.request("/dashboard/overview")
     },
-    
+
     products: {
         getAll: () => apiClient.request("/products"),
         getOne: (id) => apiClient.request(`/products/${id}`),
@@ -127,12 +135,12 @@ const apiClient = {
                 headers: { "Authorization": `Bearer ${token}` },
                 body: formData
             }).then(async r => {
-                if(!r.ok) throw new Error((await r.json()).detail || "Import failed");
+                if (!r.ok) throw new Error((await r.json()).detail || "Import failed");
                 return r.json();
             });
         }
     },
-    
+
     inventory: {
         getAll: () => apiClient.request("/inventory"),
         update: (id, payload) => apiClient.request(`/inventory/${id}`, "PUT", payload),
@@ -147,12 +155,12 @@ const apiClient = {
                 headers: { "Authorization": `Bearer ${token}` },
                 body: formData
             }).then(async r => {
-                if(!r.ok) throw new Error((await r.json()).detail || "Import failed");
+                if (!r.ok) throw new Error((await r.json()).detail || "Import failed");
                 return r.json();
             });
         }
     },
-    
+
     warehouses: {
         getAll: () => apiClient.request("/warehouses"),
         getMap: (id) => apiClient.request(`/warehouses/${id}/map`),
@@ -166,12 +174,12 @@ const apiClient = {
                 headers: { "Authorization": `Bearer ${token}` },
                 body: formData
             }).then(async r => {
-                if(!r.ok) throw new Error((await r.json()).detail || "Import failed");
+                if (!r.ok) throw new Error((await r.json()).detail || "Import failed");
                 return r.json();
             });
         }
     },
-    
+
     orders: {
         getAll: () => apiClient.request("/orders"),
         create: (payload) => apiClient.request("/orders", "POST", payload),
@@ -185,12 +193,12 @@ const apiClient = {
                 body: formData
             }).then(async r => {
                 const data = await r.json();
-                if(!r.ok) throw new Error(data.detail || "Import failed");
+                if (!r.ok) throw new Error(data.detail || "Import failed");
                 return data;
             });
         }
     },
-    
+
     jobs: {
         getAll: () => apiClient.request("/jobs"),
         assign: (id, employeeId) => apiClient.request(`/jobs/${id}/assign?employee_id=${employeeId}`, "PUT"),
@@ -198,7 +206,7 @@ const apiClient = {
         reject: (id, reason) => apiClient.request(`/jobs/${id}/reject?reason=${encodeURIComponent(reason)}`, "PUT"),
         complete: (id) => apiClient.request(`/jobs/${id}/complete`, "PUT")
     },
-    
+
     employees: {
         getAll: () => apiClient.request("/employees"),
         create: (payload) => apiClient.request("/employees", "POST", payload),
@@ -232,12 +240,12 @@ const apiClient = {
                 headers: { "Authorization": `Bearer ${token}` },
                 body: formData
             }).then(async r => {
-                if(!r.ok) throw new Error((await r.json()).detail || "Import failed");
+                if (!r.ok) throw new Error((await r.json()).detail || "Import failed");
                 return r.json();
             });
         }
     },
-    
+
     ai: {
         getDecisions: () => apiClient.request("/ai/recommendations"),
         submitFeedback: (payload) => apiClient.request("/ai/feedback", "POST", payload),
@@ -252,7 +260,7 @@ const apiClient = {
                 headers: { "Authorization": `Bearer ${token}` },
                 body: formData
             }).then(async r => {
-                if(!r.ok) throw new Error((await r.json()).detail || "Import failed");
+                if (!r.ok) throw new Error((await r.json()).detail || "Import failed");
                 return r.json();
             });
         },
@@ -260,14 +268,14 @@ const apiClient = {
         getModels: () => apiClient.request("/ai/models"),
         retrain: () => apiClient.request("/ai/retrain", "POST")
     },
-    
+
     notifications: {
         getAll: () => apiClient.request('/notifications'),
         getUnreadCount: () => apiClient.request('/notifications/unread-count'),
         markAsRead: (id) => apiClient.request(`/notifications/${id}/read`, "POST"),
         markAllAsRead: () => apiClient.request('/notifications/read-all', "POST")
     },
-    
+
     employee: {
         getMe: () => apiClient.request('/employee/me'),
         updateMe: (payload) => apiClient.request('/employee/me', 'PUT', payload),

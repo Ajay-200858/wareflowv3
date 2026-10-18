@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Account Registration — WareFlow Commerce</title>
+  <link rel="stylesheet" href="assets/css/theme.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/portal.css">
+</head>
+<body style="background:var(--color-bg-subtle);">
+
+  <!-- Header -->
+  <header id="site-header" class="site-header"></header>
+
+  <main class="auth-wrapper">
+    <div class="auth-card" style="max-width:520px;">
+      <div class="auth-header">
+        <div class="brand-icon" style="margin:0 auto 12px; width:44px; height:44px; font-size:20px;">W</div>
+        <h1 class="auth-title">Register Customer Account</h1>
+        <p class="auth-subtitle">Set up your company profile to place orders and track warehouse dispatches</p>
+      </div>
+
+      <div id="register-error-box" class="badge badge-error" style="width:100%; padding:10px 14px; margin-bottom:16px; display:none; line-height:1.4;"></div>
+
+      <form id="customer-register-form">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+          <div class="form-group">
+            <label class="form-label" for="reg-name">Contact Full Name *</label>
+            <input type="text" id="reg-name" class="form-input" placeholder="e.g. John Doe" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="reg-company">Company / Business Name *</label>
+            <input type="text" id="reg-company" class="form-input" placeholder="e.g. Acme Stores Ltd" required>
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+          <div class="form-group">
+            <label class="form-label" for="reg-email">Business Email Address *</label>
+            <input type="email" id="reg-email" class="form-input" placeholder="buyer@acme.com" required autocomplete="email">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="reg-phone">Receiving Phone Number</label>
+            <input type="tel" id="reg-phone" class="form-input" placeholder="+1-555-0199">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="reg-address">Delivery Dock Address</label>
+          <input type="text" id="reg-address" class="form-input" placeholder="Industrial park, bay/gate, dock number, city...">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="reg-password">Create Password *</label>
+          <input type="password" id="reg-password" class="form-input" placeholder="At least 6 characters" required autocomplete="new-password">
+          <div class="form-help">Must be at least 6 characters in length.</div>
+        </div>
+
+        <button type="submit" id="register-submit-btn" class="btn btn-primary btn-block" style="margin-top:12px;">
+          Create Customer Account
+        </button>
+      </form>
+
+      <div style="margin-top:24px; padding-top:20px; border-top:1px solid var(--color-border-subtle); text-align:center; font-size:13px; color:var(--color-text-secondary);">
+        Already have an account? <br>
+        <a href="login.html" style="color:var(--color-brand-primary); font-weight:600;">Sign in to your account here →</a>
+      </div>
+    </div>
+  </main>
+
+  <footer id="site-footer" class="site-footer"></footer>
+
+  <script src="runtime-config.js"></script>
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/demo-data.js"></script>
+  <script src="assets/js/tracker.js"></script>
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/cart.js"></script>
+  <script src="assets/js/components/navbar.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const form = document.getElementById("customer-register-form");
+      const nameInput = document.getElementById("reg-name");
+      const companyInput = document.getElementById("reg-company");
+      const emailInput = document.getElementById("reg-email");
+      const phoneInput = document.getElementById("reg-phone");
+      const addressInput = document.getElementById("reg-address");
+      const passwordInput = document.getElementById("reg-password");
+      const submitBtn = document.getElementById("register-submit-btn");
+      const errorBox = document.getElementById("register-error-box");
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const returnTo = urlParams.get("return_to") || "account.html";
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Creating Account...";
+        errorBox.style.display = "none";
+
+        try {
+          const payload = {
+            name: nameInput.value.trim(),
+            company_name: companyInput.value.trim(),
+            email: emailInput.value.trim(),
+            phone: phoneInput.value.trim(),
+            address: addressInput.value.trim(),
+            password: passwordInput.value,
+            target_company_id: 1
+          };
+
+          await window.WF_AUTH.register(payload);
+          window.location.href = decodeURIComponent(returnTo);
+        } catch (err) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Create Customer Account";
+          errorBox.textContent = err.message || "Registration failed. Please check your information.";
+          errorBox.style.display = "block";
+        }
+      });
+    });
+  </script>
+</body>
+</html>

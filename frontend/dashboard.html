@@ -1,24 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>WareFlow · Overview</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Instrument+Sans:wght@400..700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Instrument+Sans:wght@400..700&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
   <script>
     (function () {
       var r = document.documentElement;
       r.classList.add('js', 'no-tr');
       var s = 'open';
-      try { s = localStorage.getItem('wf2_sidebar') || 'open'; } catch (e) {}
+      try { s = localStorage.getItem('wf2_sidebar') || 'open'; } catch (e) { }
       r.dataset.sidebar = s;
       r.dataset.drawer = 'closed';
     })();
   </script>
 </head>
+
 <body class="app-page">
   <div class="toasts" id="toasts" aria-live="polite"></div>
   <div class="scrim" data-sidebar-close></div>
@@ -29,7 +33,8 @@
       <div class="sb-in">
         <div class="sb-top">
           <a class="brand" href="dashboard.html" style="color:#fff"><span data-logo></span>WareFlow</a>
-          <button class="icon-btn" type="button" data-sidebar-toggle aria-label="Hide sidebar"><i data-icon="panel"></i></button>
+          <button class="icon-btn" type="button" data-sidebar-toggle aria-label="Hide sidebar"><i
+              data-icon="panel"></i></button>
         </div>
 
         <div class="sb-company">
@@ -48,7 +53,8 @@
         <a class="sb-link" href="#papers"><i data-icon="file"></i>Seal &amp; documents</a>
 
         <div class="sb-foot">
-          <button class="sb-btn" type="button" data-sidebar-toggle><i data-icon="panel"></i><span data-sb-label>Hide sidebar</span><span class="kbd">[</span></button>
+          <button class="sb-btn" type="button" data-sidebar-toggle><i data-icon="panel"></i><span data-sb-label>Hide
+              sidebar</span><span class="kbd">[</span></button>
           <button class="sb-btn out" type="button" data-logout><i data-icon="logout"></i>Log out</button>
         </div>
       </div>
@@ -56,7 +62,8 @@
 
     <div class="main">
       <header class="topbar" id="topbar">
-        <button class="icon-btn" type="button" data-sidebar-toggle aria-label="Toggle sidebar"><i data-icon="panel"></i></button>
+        <button class="icon-btn" type="button" data-sidebar-toggle aria-label="Toggle sidebar"><i
+            data-icon="panel"></i></button>
         <div class="crumbs"><span>WareFlow</span><span class="sep">/</span><b>Overview</b></div>
         <div class="spacer"></div>
         <span class="chip"><i data-icon="user"></i><span id="userEmail"></span></span>
@@ -96,8 +103,10 @@
   </div>
 
   <script src="js/ui.js"></script>
+  <script src="runtime-config.js"></script>
   <script src="js/api/apiClient.js"></script>
   <script src="js/auth.js"></script>
   <script src="js/dashboard.js"></script>
 </body>
+
 </html>

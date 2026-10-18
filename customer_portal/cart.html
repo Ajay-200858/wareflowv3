@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shopping Cart — WareFlow Commerce</title>
+  <link rel="stylesheet" href="assets/css/theme.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/css/portal.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header id="site-header" class="site-header"></header>
+
+  <div style="background:#ffffff; border-bottom:1px solid var(--color-border-subtle); padding:20px 0;">
+    <div class="container">
+      <div style="font-size:12px; color:var(--color-text-muted); margin-bottom:4px;">
+        <a href="index.html">Home</a> / <a href="products.html">Catalogue</a> / <span>Cart</span>
+      </div>
+      <h1 style="font-size:26px;">Procurement Cart (<span id="cart-total-count">0</span> Items)</h1>
+    </div>
+  </div>
+
+  <main class="container">
+    <!-- Empty Cart State -->
+    <div id="cart-empty-state" style="display:none; padding:80px 20px; text-align:center; background:#ffffff; border-radius:var(--radius-lg); border:1px solid var(--color-border-subtle); margin:40px 0;">
+      <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="1.5" style="margin:0 auto 16px;"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+      <h2 style="font-size:20px; margin-bottom:8px;">Your procurement cart is currently empty</h2>
+      <p style="color:#6b7280; font-size:14px; margin-bottom:24px;">Browse our warehouse catalog to select active stock items or use the bulk CSV tool.</p>
+      <div style="display:flex; justify-content:center; gap:12px;">
+        <a href="products.html" class="btn btn-primary">Browse Catalogue</a>
+        <a href="bulk-order.html" class="btn btn-outline">Bulk Order (CSV)</a>
+      </div>
+    </div>
+
+    <!-- Active Cart Layout -->
+    <div id="cart-content-grid" class="cart-grid">
+      <!-- Items Table Area -->
+      <div>
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Order Line Items</span>
+            <button id="cart-clear-btn" class="btn btn-secondary btn-sm" style="color:#c92a2a;">Clear Cart</button>
+          </div>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Product & SKU</th>
+                  <th>Unit Price</th>
+                  <th>Quantity</th>
+                  <th>Line Total</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="cart-table-body">
+                <!-- Rendered by cart.js -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div style="margin-top:20px;">
+          <a href="products.html" class="btn btn-outline btn-sm">← Continue Browsing Catalogue</a>
+        </div>
+      </div>
+
+      <!-- Order Summary Card -->
+      <aside>
+        <div class="summary-card">
+          <h2 class="summary-title">Order Summary</h2>
+          <div class="summary-row">
+            <span>Estimated Subtotal</span>
+            <span id="cart-subtotal" style="font-weight:600;">₹0.00</span>
+          </div>
+          <div class="summary-row">
+            <span>Warehouse Allocation</span>
+            <span style="color:var(--color-status-success); font-weight:600;">Guaranteed at Checkout</span>
+          </div>
+          <div class="summary-row">
+            <span>Standard Logistics Freight</span>
+            <span style="color:#6b7280;">Billed on Invoice</span>
+          </div>
+
+          <div id="cart-rfq-notice" class="badge badge-rfq" style="width:100%; padding:8px 12px; margin:12px 0; display:none; line-height:1.4;">
+            ℹ Order contains items requiring commercial quote. Final invoice total will reflect agreed pricing terms.
+          </div>
+
+          <div class="summary-row total-row">
+            <span>Order Total</span>
+            <span id="cart-total-display">₹0.00</span>
+          </div>
+
+          <button id="cart-checkout-btn" class="btn btn-primary btn-lg btn-block" style="margin-top:20px;">
+            Proceed to Checkout →
+          </button>
+
+          <div style="font-size:12px; color:#6b7280; text-align:center; margin-top:12px; line-height:1.5;">
+            🔒 Stock will be atomically locked and reserved upon order confirmation.
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer id="site-footer" class="site-footer"></footer>
+
+  <!-- Scripts -->
+  <script src="runtime-config.js"></script>
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/demo-data.js"></script>
+  <script src="assets/js/tracker.js"></script>
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/cart.js"></script>
+  <script src="assets/js/components/navbar.js"></script>
+  <script src="assets/js/pages/cart.js"></script>
+</body>
+</html>

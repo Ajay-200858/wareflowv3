@@ -1,0 +1,61 @@
+{
+  "version": 2,
+  "cleanUrls": false,
+  "redirects": [
+    {
+      "source": "/customer",
+      "destination": "/customer/",
+      "permanent": true
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/index.py"
+    },
+    {
+      "source": "/customer/",
+      "destination": "/customer_portal/index.html"
+    },
+    {
+      "source": "/customer/assets/(.*)",
+      "destination": "/customer_portal/assets/$1"
+    },
+    {
+      "source": "/customer/(.*)",
+      "destination": "/customer_portal/$1"
+    },
+    {
+      "source": "/",
+      "destination": "/frontend/index.html"
+    },
+    {
+      "source": "/index.html",
+      "destination": "/frontend/index.html"
+    },
+    {
+      "source": "/app.html",
+      "destination": "/frontend/app.html"
+    },
+    {
+      "source": "/dashboard.html",
+      "destination": "/frontend/dashboard.html"
+    },
+    {
+      "source": "/onboarding.html",
+      "destination": "/frontend/onboarding.html"
+    },
+    {
+      "source": "/css/(.*)",
+      "destination": "/frontend/css/$1"
+    },
+    {
+      "source": "/js/(.*)",
+      "destination": "/frontend/js/$1"
+    },
+    {
+      "source": "/runtime-config.js",
+      "destination": "/frontend/runtime-config.js"
+    }
+  ]
+}
